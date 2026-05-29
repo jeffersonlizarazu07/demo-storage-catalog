@@ -89,3 +89,10 @@ NUL
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+# Auto-generated AI agent instructions (project-specific, not in repo)
+AGENTS.md
+
+# Auto-generated infrastructure (skill registry, SDD artifacts)
+.atl/
+.atl
+PRD.md
