@@ -40,7 +40,7 @@ export function ProductGrid({ products, searchQuery }: ProductGridProps) {
       {products.map((product, index) => (
         <div
           key={product.id}
-          className="motion-safe:animate-fade-in-up"
+          className="animate-fade-in-up"
           style={{ animationDelay: `${index * 80}ms` }}
         >
           <ProductCard product={product} />

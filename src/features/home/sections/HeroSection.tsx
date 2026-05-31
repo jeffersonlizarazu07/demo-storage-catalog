@@ -35,7 +35,7 @@ export function HeroSection() {
         <div className="mx-auto max-w-2xl text-center">
           <h1
             className={`text-4xl font-bold tracking-tight text-primary sm:text-5xl lg:text-6xl dark:text-white ${
-              inView ? 'motion-safe:animate-fade-in-up' : 'opacity-0'
+              inView ? 'animate-fade-in-up' : 'opacity-0'
             }`}
           >
             Descubre la{' '}
@@ -45,7 +45,7 @@ export function HeroSection() {
 
           <p
             className={`mt-6 text-lg leading-relaxed text-muted ${
-              inView ? 'motion-safe:animate-fade-in-up delay-100' : 'opacity-0'
+              inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
             }`}
           >
             Explora nuestro catálogo con los mejores productos en gaming, audio,
@@ -54,7 +54,7 @@ export function HeroSection() {
 
           <div
             className={`mt-10 flex items-center justify-center gap-4 ${
-              inView ? 'motion-safe:animate-fade-in-up delay-200' : 'opacity-0'
+              inView ? 'animate-fade-in-up delay-200' : 'opacity-0'
             }`}
           >
             <Button as="router-link" to="/catalogo" variant="accent">

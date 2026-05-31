@@ -13,33 +13,29 @@ export function Contact() {
       <div className="text-center">
         <h1
           className={`text-3xl font-bold tracking-tight text-foreground dark:text-white sm:text-4xl ${
-            inView ? 'motion-safe:animate-fade-in-up' : 'opacity-0'
+            inView ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
           Contacto
         </h1>
         <p
           className={`mt-2 text-muted ${
-            inView ? 'motion-safe:animate-fade-in-up delay-100' : 'opacity-0'
+            inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
           }`}
         >
           Estamos aquí para ayudarte. Cuéntanos cómo podemos ayudarte.
         </p>
       </div>
 
-      {/* Contact Info Cards */}
-      <div
-        className={`mt-12 ${
-          inView ? 'motion-safe:animate-fade-in-up delay-200' : 'opacity-0'
-        }`}
-      >
+      {/* Contact Info Cards — animación propia dentro del componente */}
+      <div className="mt-12">
         <ContactInfoSection />
       </div>
 
       {/* WhatsApp CTA */}
       <div
         className={`mt-8 ${
-          inView ? 'motion-safe:animate-fade-in-up delay-300' : 'opacity-0'
+          inView ? 'animate-fade-in-up delay-300' : 'opacity-0'
         }`}
       >
         <WhatsAppCTASection />
@@ -48,7 +44,7 @@ export function Contact() {
       {/* Two-column: Form + Social */}
       <div
         className={`mt-8 grid gap-8 lg:grid-cols-5 ${
-          inView ? 'motion-safe:animate-fade-in-up delay-400' : 'opacity-0'
+          inView ? 'animate-fade-in-up delay-400' : 'opacity-0'
         }`}
       >
         <div className="lg:col-span-3">

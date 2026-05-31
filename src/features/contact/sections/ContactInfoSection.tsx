@@ -73,13 +73,20 @@ const contactDetails = [
   },
 ];
 
+import { useInView } from '../../../shared/hooks/useInView';
+
 export function ContactInfoSection() {
+  const { ref, inView } = useInView();
+
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {contactDetails.map((item) => (
+    <div ref={ref} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {contactDetails.map((item, index) => (
         <div
           key={item.title}
-          className="border-border bg-surface dark:bg-primary flex items-start gap-4 rounded-xl border p-6 transition-shadow hover:shadow-md dark:border-white/10"
+          className={`border-border bg-surface dark:bg-primary flex items-start gap-4 rounded-xl border p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 ${
+            inView ? 'animate-fade-in-up' : 'opacity-0'
+          }`}
+          style={inView ? { animationDelay: `${index * 100}ms` } : undefined}
         >
           <div
             className="bg-accent/10 text-accent flex h-12 w-12 shrink-0 items-center justify-center rounded-lg hover:cursor-pointer"
