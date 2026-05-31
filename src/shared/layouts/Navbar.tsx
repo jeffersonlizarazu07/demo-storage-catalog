@@ -34,11 +34,11 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
 
   return (
     <nav
-      className={`sticky top-0 z-50 w-full border-b bg-surface/80 backdrop-blur-md transition-shadow duration-300 ${
+      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         isScrolled
-          ? 'border-border shadow-md dark:border-white/10'
-          : 'border-transparent dark:border-transparent'
-      } dark:bg-primary/80`}
+          ? 'border-b border-border/60 bg-surface/80 shadow-lg shadow-black/5 backdrop-blur-xl dark:border-white/10 dark:bg-primary/80'
+          : 'border-b border-transparent bg-surface/50 backdrop-blur-sm dark:bg-primary/30'
+      }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
