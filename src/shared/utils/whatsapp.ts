@@ -14,6 +14,8 @@ export function getWhatsAppLink(
     ? `Hola, me interesa el producto: ${productName}`
     : 'Hola, me gustaría obtener más información.';
 
+  phone = '3209520302'
+
   const base = `https://wa.me/${phone}`;
   const params = new URLSearchParams({ text: message });
 
