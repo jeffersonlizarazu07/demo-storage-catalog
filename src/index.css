@@ -44,3 +44,66 @@
     @apply flex min-h-svh flex-col;
   }
 }
+
+/* ── Animations ── */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@utility animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out both;
+}
+
+@utility animate-fade-in {
+  animation: fade-in 0.5s ease-out both;
+}
+
+@utility animate-scale-in {
+  animation: scale-in 0.4s ease-out both;
+}
+
+@utility animate-fade-in-up-fast {
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+/* Stagger delays */
+@utility delay-100 { animation-delay: 100ms; }
+@utility delay-200 { animation-delay: 200ms; }
+@utility delay-300 { animation-delay: 300ms; }
+@utility delay-400 { animation-delay: 400ms; }
+@utility delay-500 { animation-delay: 500ms; }
+@utility delay-600 { animation-delay: 600ms; }
+@utility delay-700 { animation-delay: 700ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-fade-in,
+  .animate-scale-in,
+  .animate-fade-in-up-fast {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -55,25 +55,40 @@ const categories = [
   },
 ];
 
+import { useInView } from '../../../shared/hooks/useInView';
+
 export function CategoriesSection() {
+  const { ref, inView } = useInView();
+
   return (
-    <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <section ref={ref} className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-primary dark:text-white">
+          <h2
+            className={`text-3xl font-bold tracking-tight text-primary dark:text-white ${
+              inView ? 'motion-safe:animate-fade-in-up' : 'opacity-0'
+            }`}
+          >
             Categorías
           </h2>
-          <p className="mt-2 text-muted">
+          <p
+            className={`mt-2 text-muted ${
+              inView ? 'motion-safe:animate-fade-in-up delay-100' : 'opacity-0'
+            }`}
+          >
             Explora nuestros productos por categoría
           </p>
         </div>
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <Link
               key={category.name}
               to={`/catalogo?categoria=${category.name.toLowerCase()}`}
-              className="group flex flex-col items-center rounded-xl border border-border bg-surface p-8 text-center transition-all hover:border-accent/30 hover:shadow-md dark:border-white/10 dark:hover:border-accent/30"
+              className={`group flex flex-col items-center rounded-xl border border-border bg-surface p-8 text-center transition-all hover:border-accent/30 hover:shadow-md dark:border-white/10 dark:hover:border-accent/30 ${
+                inView ? 'motion-safe:animate-fade-in-up' : 'opacity-0'
+              }`}
+              style={inView ? { animationDelay: `${200 + index * 100}ms` } : undefined}
             >
               <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent group-hover:text-white">
                 {category.icon}
