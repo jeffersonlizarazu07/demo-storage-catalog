@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #18181B;             /* zinc-900     */
   --color-primary-hover: #27272A;       /* zinc-800     */
@@ -19,8 +21,16 @@
     scroll-behavior: smooth;
   }
 
+  .dark {
+    --color-bg: #09090B;                  /* zinc-950     */
+    --color-surface: #18181B;             /* zinc-900     */
+    --color-foreground: #FAFAFA;          /* zinc-50      */
+    --color-border: #27272A;              /* zinc-800     */
+    --color-muted: #A1A1AA;               /* zinc-400     */
+  }
+
   body {
-    @apply m-0 min-h-svh bg-bg dark:bg-primary;
+    @apply m-0 min-h-svh bg-bg text-foreground transition-colors duration-300;
     font-family:
       'Inter',
       system-ui,
