@@ -10,7 +10,7 @@ const PLACEHOLDER_IMG = 'https://placehold.co/400x300/e4e4e7/71717a?text=Product
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-shadow hover:shadow-md dark:border-white/10">
+    <article className="group border-border bg-surface dark:bg-primary flex flex-col overflow-hidden rounded-xl border shadow-sm transition-shadow hover:shadow-md dark:border-white/10">
       {/* Image */}
       <Link to={`/producto/${product.id}`} className="overflow-hidden">
         <img
@@ -24,20 +24,20 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2 p-4">
         {/* Category badge */}
-        <span className="w-fit rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
+        <span className="bg-accent/10 text-accent w-fit rounded-full px-2.5 py-0.5 text-xs font-medium">
           {product.category}
         </span>
 
         {/* Name */}
         <Link
           to={`/producto/${product.id}`}
-          className="text-base font-semibold text-primary transition-colors hover:text-accent dark:text-white dark:hover:text-accent"
+          className="text-primary text-base font-semibold dark:text-white"
         >
           {product.name}
         </Link>
 
         {/* Price */}
-        <p className="mt-auto text-xl font-bold text-foreground dark:text-white">
+        <p className="text-foreground mt-auto text-xl font-bold dark:text-white">
           ${product.price.toFixed(2)}
         </p>
 
@@ -45,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="mt-2 flex gap-2">
           <Link
             to={`/producto/${product.id}`}
-            className="flex-1 rounded-lg border border-border px-3 py-2 text-center text-sm font-medium text-primary transition-colors hover:bg-border dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+            className="border-border text-primary hover:bg-border flex-1 rounded-lg border px-3 py-2 text-center text-sm font-medium transition-colors dark:border-white/20 dark:text-white dark:hover:bg-white/10"
           >
             Ver más
           </Link>
@@ -53,7 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
             href={getWhatsAppLink(product.name)}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
+            className="bg-accent hover:bg-accent-hover rounded-lg px-3 py-2 text-sm font-medium text-white transition-colors"
           >
             WhatsApp
           </a>
