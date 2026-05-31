@@ -31,7 +31,7 @@ export function ProductCard({ product }: ProductCardProps) {
         {/* Name */}
         <Link
           to={`/producto/${product.id}`}
-          className="text-primary text-base font-semibold dark:text-white"
+          className="font-display text-primary text-base font-semibold dark:text-white"
         >
           {product.name}
         </Link>

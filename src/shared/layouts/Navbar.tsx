@@ -42,7 +42,7 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
-        <Link to="/" className="text-xl font-bold tracking-tight text-primary dark:text-white">
+        <Link to="/" className="font-display text-xl font-bold tracking-tight text-primary dark:text-white">
           Tech<span className="text-accent">Store</span>
         </Link>
 

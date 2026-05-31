@@ -3,6 +3,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+
   --color-primary: #18181B;             /* zinc-900     */
   --color-primary-hover: #27272A;       /* zinc-800     */
   --color-bg: #FAFAFA;                  /* zinc-50      */
@@ -30,14 +33,13 @@
   }
 
   body {
-    @apply m-0 min-h-svh bg-bg text-foreground transition-colors duration-300;
-    font-family:
-      'Inter',
-      system-ui,
-      -apple-system,
-      sans-serif;
+    @apply m-0 min-h-svh bg-bg text-foreground font-body transition-colors duration-300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
   }
 
   #root {
