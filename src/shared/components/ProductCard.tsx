@@ -10,7 +10,7 @@ const PLACEHOLDER_IMG = 'https://placehold.co/400x300/e4e4e7/71717a?text=Product
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="group border-border bg-surface dark:bg-primary flex flex-col overflow-hidden rounded-xl border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:hover:border-accent/30">
+    <article className="group border-border bg-surface dark:bg-primary flex h-[400px] flex-col overflow-hidden rounded-xl border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:hover:border-accent/30">
       {/* Image */}
       <Link to={`/producto/${product.id}`} className="overflow-hidden">
         <img
@@ -28,10 +28,10 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.category}
         </span>
 
-        {/* Name */}
+        {/* Name — max 2 líneas para mantener cards uniformes */}
         <Link
           to={`/producto/${product.id}`}
-          className="font-display text-primary text-base font-semibold dark:text-white"
+          className="font-display text-primary text-base font-semibold leading-snug dark:text-white line-clamp-2"
         >
           {product.name}
         </Link>
