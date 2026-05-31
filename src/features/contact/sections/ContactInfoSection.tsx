@@ -83,21 +83,21 @@ export function ContactInfoSection() {
       {contactDetails.map((item, index) => (
         <div
           key={item.title}
-          className={`border-border bg-surface dark:bg-primary flex items-start gap-4 rounded-xl border p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 ${
+          className={`flex items-start gap-4 rounded-xl border border-border bg-surface p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-primary ${
             inView ? 'animate-fade-in-up' : 'opacity-0'
           }`}
           style={inView ? { animationDelay: `${index * 100}ms` } : undefined}
         >
           <div
-            className="bg-accent/10 text-accent flex h-12 w-12 shrink-0 items-center justify-center rounded-lg hover:cursor-pointer"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent hover:cursor-pointer"
             onClick={() => item.href && window.open(item.href, '_blank')}
           >
             {item.icon}
           </div>
           <div>
-            <h3 className="text-foreground font-semibold dark:text-white">{item.title}</h3>
-            <p className="text-foreground mt-1 text-sm dark:text-white">{item.content}</p>
-            <p className="text-muted text-xs">{item.subtitle}</p>
+            <h3 className="font-semibold text-foreground dark:text-white">{item.title}</h3>
+            <p className="mt-1 text-sm text-foreground dark:text-white">{item.content}</p>
+            <p className="text-xs text-muted">{item.subtitle}</p>
           </div>
         </div>
       ))}

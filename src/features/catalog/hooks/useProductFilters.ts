@@ -49,9 +49,7 @@ export function useProductFilters() {
   /* ── Derive selected category from URL ── */
   const selectedCategory = useMemo(() => {
     if (!categoryParam) return 'Todas';
-    const match = categories.find(
-      (c) => c.toLowerCase() === categoryParam.toLowerCase(),
-    );
+    const match = categories.find((c) => c.toLowerCase() === categoryParam.toLowerCase());
     return match ?? 'Todas';
   }, [categoryParam, categories]);
 
@@ -68,9 +66,7 @@ export function useProductFilters() {
     let result = products;
 
     if (selectedCategory !== 'Todas') {
-      result = result.filter(
-        (p) => p.category.toLowerCase() === selectedCategory.toLowerCase(),
-      );
+      result = result.filter((p) => p.category.toLowerCase() === selectedCategory.toLowerCase());
     }
 
     if (searchQuery.trim()) {

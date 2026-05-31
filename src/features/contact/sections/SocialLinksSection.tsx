@@ -45,11 +45,9 @@ const socialLinks: SocialLink[] = [
 
 export function SocialLinksSection() {
   return (
-    <section className="rounded-xl border border-border bg-surface p-6 dark:border-white/10 dark:bg-primary sm:p-8">
+    <section className="rounded-xl border border-border bg-surface p-6 sm:p-8 dark:border-white/10 dark:bg-primary">
       <h3 className="text-lg font-semibold text-foreground dark:text-white">Síguenos en redes</h3>
-      <p className="mt-1 text-sm text-muted">
-        Entérate de las últimas novedades y promociones.
-      </p>
+      <p className="mt-1 text-sm text-muted">Entérate de las últimas novedades y promociones.</p>
       <div className="mt-6 flex flex-wrap gap-4">
         {socialLinks.map((link) => (
           <a

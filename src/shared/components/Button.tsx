@@ -6,8 +6,7 @@ type ButtonVariant = 'primary' | 'accent' | 'outline' | 'ghost';
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
     'bg-primary text-white hover:bg-primary-hover dark:bg-white dark:text-primary dark:hover:bg-white/90',
-  accent:
-    'bg-accent text-white hover:bg-accent-hover shadow-sm',
+  accent: 'bg-accent text-white hover:bg-accent-hover shadow-sm',
   outline:
     'border border-border text-primary hover:bg-border dark:border-white/20 dark:text-white dark:hover:bg-white/10',
   ghost:
@@ -22,11 +21,9 @@ interface ButtonBaseProps {
   className?: string;
 }
 
-type ButtonAsButton = ButtonBaseProps &
-  ButtonHTMLAttributes<HTMLButtonElement> & { as?: 'button' };
+type ButtonAsButton = ButtonBaseProps & ButtonHTMLAttributes<HTMLButtonElement> & { as?: 'button' };
 
-type ButtonAsLink = ButtonBaseProps &
-  AnchorHTMLAttributes<HTMLAnchorElement> & { as: 'a' };
+type ButtonAsLink = ButtonBaseProps & AnchorHTMLAttributes<HTMLAnchorElement> & { as: 'a' };
 
 type ButtonAsRouterLink = ButtonBaseProps & {
   as: 'router-link';

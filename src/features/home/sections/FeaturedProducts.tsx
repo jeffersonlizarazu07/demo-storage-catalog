@@ -37,7 +37,10 @@ export function FeaturedProducts() {
   return (
     <section ref={ref} className="relative bg-bg px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       {/* Gradient top divider */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px w-3/4 bg-linear-to-r from-transparent via-accent-secondary/30 to-transparent" aria-hidden="true" />
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px w-3/4 bg-linear-to-r from-transparent via-accent-secondary/30 to-transparent"
+        aria-hidden="true"
+      />
       <div className="mx-auto max-w-7xl">
         <div className="flex items-end justify-between">
           <div>
@@ -49,14 +52,17 @@ export function FeaturedProducts() {
               Productos destacados
             </h2>
             <p
-              className={`mt-2 text-muted ${
-                inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
-              }`}
+              className={`mt-2 text-muted ${inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}
             >
               Lo más popular de nuestro catálogo
             </p>
           </div>
-          <Button as="router-link" to="/catalogo" variant="outline" className={`hidden sm:inline-flex ${inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}>
+          <Button
+            as="router-link"
+            to="/catalogo"
+            variant="outline"
+            className={`hidden sm:inline-flex ${inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}`}
+          >
             Ver todos
           </Button>
         </div>

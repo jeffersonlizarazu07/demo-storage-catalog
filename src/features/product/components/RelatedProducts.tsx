@@ -20,11 +20,7 @@ export function RelatedProducts({ products }: RelatedProductsProps) {
       >
         Productos relacionados
       </h2>
-      <p
-        className={`mt-1 text-muted ${
-          inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
-        }`}
-      >
+      <p className={`mt-1 text-muted ${inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
         Otros productos en la misma categoría
       </p>
 

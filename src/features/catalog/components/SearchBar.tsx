@@ -11,7 +11,10 @@ export function SearchBar({ value, onChange, totalCount, filteredCount }: Search
   return (
     <div className="relative">
       {/* Search icon */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3" aria-hidden="true">
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+        aria-hidden="true"
+      >
         <svg
           className="h-5 w-5 text-muted"
           fill="none"
@@ -32,7 +35,7 @@ export function SearchBar({ value, onChange, totalCount, filteredCount }: Search
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder="Buscar productos por nombre, marca o descripción..."
-        className="w-full rounded-xl border border-border bg-surface py-3 pl-10 pr-4 text-sm text-primary placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20 dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-muted"
+        className="w-full rounded-xl border border-border bg-surface py-3 pr-4 pl-10 text-sm text-primary placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-muted"
       />
 
       {/* Result count */}

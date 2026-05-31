@@ -18,9 +18,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
         <h1 className="text-3xl font-bold tracking-tight text-primary dark:text-white">
           {product.name}
         </h1>
-        {product.brand && (
-          <p className="mt-1 text-sm text-muted">Marca: {product.brand}</p>
-        )}
+        {product.brand && <p className="mt-1 text-sm text-muted">Marca: {product.brand}</p>}
       </div>
 
       {/* Price */}
@@ -37,9 +35,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       {/* Specs */}
       {product.specs && Object.keys(product.specs).length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold text-primary dark:text-white">
-            Especificaciones
-          </h2>
+          <h2 className="text-lg font-semibold text-primary dark:text-white">Especificaciones</h2>
           <dl className="mt-2 divide-y divide-border rounded-xl border border-border dark:divide-white/10 dark:border-white/10">
             {Object.entries(product.specs).map(([key, value]) => (
               <div key={key} className="flex justify-between px-4 py-3 text-sm">

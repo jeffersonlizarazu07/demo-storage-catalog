@@ -42,7 +42,10 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
-        <Link to="/" className="font-display text-xl font-bold tracking-tight text-primary dark:text-white">
+        <Link
+          to="/"
+          className="font-display text-xl font-bold tracking-tight text-primary dark:text-white"
+        >
           Tech<span className="text-accent">Store</span>
         </Link>
 
@@ -65,7 +68,13 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
             aria-label={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
           >
             {isDark ? (
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -73,7 +82,13 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
                 />
               </svg>
             ) : (
-              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"

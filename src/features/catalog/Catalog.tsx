@@ -20,10 +20,7 @@ function CatalogSkeleton() {
       </div>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div
-            key={i}
-            className="h-80 animate-pulse rounded-xl bg-gray-200 dark:bg-white/10"
-          />
+          <div key={i} className="h-80 animate-pulse rounded-xl bg-gray-200 dark:bg-white/10" />
         ))}
       </div>
     </div>
@@ -35,8 +32,18 @@ function CatalogError({ message, onRetry }: { message: string; onRetry: () => vo
   return (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
-        <svg className="h-7 w-7 text-red-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+        <svg
+          className="h-7 w-7 text-red-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+          />
         </svg>
       </div>
       <h2 className="text-xl font-semibold text-primary dark:text-white">
@@ -75,7 +82,10 @@ export function Catalog() {
   if (error) return <CatalogError message={error} onRetry={() => window.location.reload()} />;
 
   return (
-    <section ref={ref} className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8">
+    <section
+      ref={ref}
+      className="mx-auto flex w-full max-w-7xl flex-col gap-8 px-4 py-12 sm:px-6 lg:px-8"
+    >
       {/* Header */}
       <div>
         <h1
@@ -85,11 +95,7 @@ export function Catalog() {
         >
           Catálogo
         </h1>
-        <p
-          className={`mt-1 text-muted ${
-            inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
-          }`}
-        >
+        <p className={`mt-1 text-muted ${inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
           {filteredProducts.length} de {totalCount} productos
         </p>
       </div>
@@ -106,11 +112,7 @@ export function Catalog() {
 
       {/* Filters */}
       <div className={inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}>
-        <FilterBar
-          categories={categories}
-          selected={selectedCategory}
-          onSelect={setCategory}
-        />
+        <FilterBar categories={categories} selected={selectedCategory} onSelect={setCategory} />
       </div>
 
       {/* Grid */}

@@ -13,9 +13,11 @@ interface UseInViewOptions {
  *
  * Por defecto se dispara una sola vez (once=true).
  */
-export function useInView<T extends HTMLElement = HTMLDivElement>(
-  { threshold = 0.1, rootMargin = '0px', once = true }: UseInViewOptions = {},
-) {
+export function useInView<T extends HTMLElement = HTMLDivElement>({
+  threshold = 0.1,
+  rootMargin = '0px',
+  once = true,
+}: UseInViewOptions = {}) {
   const [inView, setInView] = useState(false);
   // Almacenamos el elemento actual para poder desobservarlo en el cleanup
   const [element, setElement] = useState<T | null>(null);

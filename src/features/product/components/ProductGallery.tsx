@@ -8,11 +8,7 @@ interface ProductGalleryProps {
 export function ProductGallery({ image, name }: ProductGalleryProps) {
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-surface dark:border-white/10 dark:bg-primary">
-      <img
-        src={image || PLACEHOLDER_IMG}
-        alt={name}
-        className="h-full w-full object-cover"
-      />
+      <img src={image || PLACEHOLDER_IMG} alt={name} className="h-full w-full object-cover" />
     </div>
   );
 }

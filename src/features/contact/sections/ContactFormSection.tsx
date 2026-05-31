@@ -44,11 +44,7 @@ export function ContactFormSection() {
         <p className="mt-2 text-sm text-muted">
           Gracias por contactarnos. Te responderemos a la brevedad.
         </p>
-        <Button
-          variant="outline"
-          className="mt-6"
-          onClick={() => setSubmitted(false)}
-        >
+        <Button variant="outline" className="mt-6" onClick={() => setSubmitted(false)}>
           Enviar otro mensaje
         </Button>
       </div>
@@ -56,11 +52,17 @@ export function ContactFormSection() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-xl border border-border bg-surface p-6 dark:border-white/10 dark:bg-primary sm:p-8">
+    <form
+      onSubmit={handleSubmit}
+      className="rounded-xl border border-border bg-surface p-6 sm:p-8 dark:border-white/10 dark:bg-primary"
+    >
       <div className="space-y-5">
         {/* Name */}
         <div>
-          <label htmlFor="contact-name" className="block text-sm font-medium text-foreground dark:text-white">
+          <label
+            htmlFor="contact-name"
+            className="block text-sm font-medium text-foreground dark:text-white"
+          >
             Nombre completo
           </label>
           <input
@@ -69,14 +71,17 @@ export function ContactFormSection() {
             required
             value={form.name}
             onChange={(e) => handleChange('name', e.target.value)}
-            className="mt-1 block w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-white/40"
+            className="mt-1 block w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/30 focus:outline-none dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-white/40"
             placeholder="Tu nombre"
           />
         </div>
 
         {/* Email */}
         <div>
-          <label htmlFor="contact-email" className="block text-sm font-medium text-foreground dark:text-white">
+          <label
+            htmlFor="contact-email"
+            className="block text-sm font-medium text-foreground dark:text-white"
+          >
             Correo electrónico
           </label>
           <input
@@ -85,14 +90,17 @@ export function ContactFormSection() {
             required
             value={form.email}
             onChange={(e) => handleChange('email', e.target.value)}
-            className="mt-1 block w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-white/40"
+            className="mt-1 block w-full rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/30 focus:outline-none dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-white/40"
             placeholder="tu@correo.com"
           />
         </div>
 
         {/* Message */}
         <div>
-          <label htmlFor="contact-message" className="block text-sm font-medium text-foreground dark:text-white">
+          <label
+            htmlFor="contact-message"
+            className="block text-sm font-medium text-foreground dark:text-white"
+          >
             Mensaje
           </label>
           <textarea
@@ -101,7 +109,7 @@ export function ContactFormSection() {
             rows={5}
             value={form.message}
             onChange={(e) => handleChange('message', e.target.value)}
-            className="mt-1 block w-full resize-y rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/30 dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-white/40"
+            className="mt-1 block w-full resize-y rounded-lg border border-border bg-bg px-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/30 focus:outline-none dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-white/40"
             placeholder="¿En qué podemos ayudarte?"
           />
         </div>

@@ -29,8 +29,18 @@ function DetailError({ message }: { message: string }) {
   return (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
-        <svg className="h-7 w-7 text-red-500" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
+        <svg
+          className="h-7 w-7 text-red-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={1.5}
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
+          />
         </svg>
       </div>
       <h2 className="text-xl font-semibold text-primary dark:text-white">
@@ -71,11 +81,7 @@ export function ProductDetail() {
         >
           Producto no encontrado
         </h1>
-        <p
-          className={`mt-2 text-muted ${
-            inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
-          }`}
-        >
+        <p className={`mt-2 text-muted ${inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
           El producto que buscas no existe o ha sido eliminado.
         </p>
         <Link
@@ -106,7 +112,11 @@ export function ProductDetail() {
           strokeWidth={1.5}
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+          />
         </svg>
         Volver al catálogo
       </Link>
@@ -122,9 +132,7 @@ export function ProductDetail() {
       </div>
 
       {/* Related products */}
-      <div
-        className={inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}
-      >
+      <div className={inView ? 'animate-fade-in-up delay-200' : 'opacity-0'}>
         <RelatedProducts products={relatedProducts} />
       </div>
     </section>

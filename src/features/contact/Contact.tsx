@@ -12,17 +12,13 @@ export function Contact() {
       {/* Heading */}
       <div className="text-center">
         <h1
-          className={`text-3xl font-bold tracking-tight text-foreground dark:text-white sm:text-4xl ${
+          className={`text-3xl font-bold tracking-tight text-foreground sm:text-4xl dark:text-white ${
             inView ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
           Contacto
         </h1>
-        <p
-          className={`mt-2 text-muted ${
-            inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
-          }`}
-        >
+        <p className={`mt-2 text-muted ${inView ? 'animate-fade-in-up delay-100' : 'opacity-0'}`}>
           Estamos aquí para ayudarte. Cuéntanos cómo podemos ayudarte.
         </p>
       </div>
@@ -33,11 +29,7 @@ export function Contact() {
       </div>
 
       {/* WhatsApp CTA */}
-      <div
-        className={`mt-8 ${
-          inView ? 'animate-fade-in-up delay-300' : 'opacity-0'
-        }`}
-      >
+      <div className={`mt-8 ${inView ? 'animate-fade-in-up delay-300' : 'opacity-0'}`}>
         <WhatsAppCTASection />
       </div>
 

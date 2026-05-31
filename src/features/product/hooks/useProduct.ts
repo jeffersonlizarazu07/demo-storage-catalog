@@ -44,9 +44,9 @@ export function useProduct() {
         setProduct(fetchedProduct);
 
         // Derive related from same category (max 4)
-        const related = allProducts.filter(
-          (p) => p.category === fetchedProduct.category && p.id !== fetchedProduct.id,
-        ).slice(0, 4);
+        const related = allProducts
+          .filter((p) => p.category === fetchedProduct.category && p.id !== fetchedProduct.id)
+          .slice(0, 4);
 
         setRelatedProducts(related);
       } catch (err) {

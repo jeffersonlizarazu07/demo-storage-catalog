@@ -3,9 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 
 import { MainLayout } from '../shared/layouts/MainLayout';
 
-const Home = lazy(() =>
-  import('../features/home/Home').then((m) => ({ default: m.Home })),
-);
+const Home = lazy(() => import('../features/home/Home').then((m) => ({ default: m.Home })));
 const Catalog = lazy(() =>
   import('../features/catalog/Catalog').then((m) => ({ default: m.Catalog })),
 );

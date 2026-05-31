@@ -10,7 +10,7 @@ const PLACEHOLDER_IMG = 'https://placehold.co/400x300/e4e4e7/71717a?text=Product
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="group border-border bg-surface dark:bg-primary flex h-[400px] flex-col overflow-hidden rounded-xl border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:hover:border-accent/30">
+    <article className="group flex h-[400px] flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:bg-primary dark:hover:border-accent/30">
       {/* Image */}
       <Link to={`/producto/${product.id}`} className="overflow-hidden">
         <img
@@ -24,20 +24,20 @@ export function ProductCard({ product }: ProductCardProps) {
       {/* Content */}
       <div className="flex flex-1 flex-col gap-2 p-4">
         {/* Category badge */}
-        <span className="bg-accent/10 text-accent w-fit rounded-full px-2.5 py-0.5 text-xs font-medium">
+        <span className="w-fit rounded-full bg-accent/10 px-2.5 py-0.5 text-xs font-medium text-accent">
           {product.category}
         </span>
 
         {/* Name — max 2 líneas para mantener cards uniformes */}
         <Link
           to={`/producto/${product.id}`}
-          className="font-display text-primary text-base font-semibold leading-snug dark:text-white line-clamp-2"
+          className="line-clamp-2 font-display text-base leading-snug font-semibold text-primary dark:text-white"
         >
           {product.name}
         </Link>
 
         {/* Price */}
-        <p className="text-foreground mt-auto text-xl font-bold dark:text-white">
+        <p className="mt-auto text-xl font-bold text-foreground dark:text-white">
           ${product.price.toFixed(2)}
         </p>
 
@@ -45,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <div className="mt-2 flex gap-2">
           <Link
             to={`/producto/${product.id}`}
-            className="border-border text-primary hover:bg-border flex-1 rounded-lg border px-3 py-2 text-center text-sm font-medium transition-colors dark:border-white/20 dark:text-white dark:hover:bg-white/10"
+            className="flex-1 rounded-lg border border-border px-3 py-2 text-center text-sm font-medium text-primary transition-colors hover:bg-border dark:border-white/20 dark:text-white dark:hover:bg-white/10"
           >
             Ver más
           </Link>
@@ -53,7 +53,7 @@ export function ProductCard({ product }: ProductCardProps) {
             href={getWhatsAppLink(product.name)}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-accent hover:bg-accent-hover rounded-lg px-3 py-2 text-sm font-medium text-white transition-colors"
+            className="rounded-lg bg-accent px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
           >
             WhatsApp
           </a>
