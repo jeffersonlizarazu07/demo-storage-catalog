@@ -1,9 +1,7 @@
-import type { Category } from '../hooks/useProductFilters';
-
 interface FilterBarProps {
-  categories: readonly Category[];
-  selected: Category;
-  onSelect: (category: Category) => void;
+  categories: readonly string[];
+  selected: string;
+  onSelect: (category: string) => void;
 }
 
 export function FilterBar({ categories, selected, onSelect }: FilterBarProps) {

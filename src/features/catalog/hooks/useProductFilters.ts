@@ -1,25 +1,61 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import type { Product } from '../../../shared/interfaces/product.interface';
-import { products } from '../../../shared/data/products';
-
-const CATEGORIES = ['Todas', 'Gaming', 'Audio', 'Computadores', 'Accesorios'] as const;
-
-export type Category = (typeof CATEGORIES)[number];
+import { fetchProducts, fetchCategories } from '../../../shared/services/productService';
 
 export function useProductFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get('categoria') ?? '';
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<string[]>(['Todas']);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const selectedCategory: Category = categoryParam
-    ? CATEGORIES.find(
-        (c) => c.toLowerCase() === categoryParam.toLowerCase(),
-      ) ?? 'Todas'
-    : 'Todas';
+  /* ── Fetch products & categories on mount ── */
+  useEffect(() => {
+    let cancelled = false;
 
-  const setCategory = (category: Category) => {
+    async function load() {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const [fetchedProducts, fetchedCategories] = await Promise.all([
+          fetchProducts(),
+          fetchCategories(),
+        ]);
+
+        if (cancelled) return;
+
+        setProducts(fetchedProducts);
+        setCategories(['Todas', ...fetchedCategories]);
+      } catch (err) {
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Error al cargar productos');
+        }
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /* ── Derive selected category from URL ── */
+  const selectedCategory = useMemo(() => {
+    if (!categoryParam) return 'Todas';
+    const match = categories.find(
+      (c) => c.toLowerCase() === categoryParam.toLowerCase(),
+    );
+    return match ?? 'Todas';
+  }, [categoryParam, categories]);
+
+  const setCategory = (category: string) => {
     if (category === 'Todas') {
       setSearchParams({});
     } else {
@@ -27,6 +63,7 @@ export function useProductFilters() {
     }
   };
 
+  /* ── Client-side filtering ── */
   const filteredProducts = useMemo<Product[]>(() => {
     let result = products;
 
@@ -42,20 +79,22 @@ export function useProductFilters() {
         (p) =>
           p.name.toLowerCase().includes(query) ||
           p.description.toLowerCase().includes(query) ||
-          p.brand?.toLowerCase().includes(query),
+          (p.brand && p.brand.toLowerCase().includes(query)),
       );
     }
 
     return result;
-  }, [selectedCategory, searchQuery]);
+  }, [products, selectedCategory, searchQuery]);
 
   return {
     searchQuery,
     setSearchQuery,
     selectedCategory,
     setCategory,
-    categories: CATEGORIES,
+    categories,
     filteredProducts,
     totalCount: products.length,
-  };
+    loading,
+    error,
+  } as const;
 }
