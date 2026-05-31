@@ -9,7 +9,9 @@ export function FeaturedProducts() {
   const { ref, inView } = useInView();
 
   return (
-    <section ref={ref} className="bg-bg px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <section ref={ref} className="relative bg-bg px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      {/* Gradient top divider */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px w-3/4 bg-gradient-to-r from-transparent via-accent-secondary/30 to-transparent" aria-hidden="true" />
       <div className="mx-auto max-w-7xl">
         <div className="flex items-end justify-between">
           <div>

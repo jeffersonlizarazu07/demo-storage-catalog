@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useInView } from '../../../shared/hooks/useInView';
 
 const categories = [
   {
@@ -55,13 +56,13 @@ const categories = [
   },
 ];
 
-import { useInView } from '../../../shared/hooks/useInView';
-
 export function CategoriesSection() {
   const { ref, inView } = useInView();
 
   return (
-    <section ref={ref} className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <section ref={ref} className="relative px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      {/* Gradient top divider */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto h-px w-3/4 bg-gradient-to-r from-transparent via-accent/30 to-transparent" aria-hidden="true" />
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
           <h2

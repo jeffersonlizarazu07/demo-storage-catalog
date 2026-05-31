@@ -10,7 +10,7 @@ const PLACEHOLDER_IMG = 'https://placehold.co/400x300/e4e4e7/71717a?text=Product
 
 export function ProductCard({ product }: ProductCardProps) {
   return (
-    <article className="group border-border bg-surface dark:bg-primary flex flex-col overflow-hidden rounded-xl border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-white/10">
+    <article className="group border-border bg-surface dark:bg-primary flex flex-col overflow-hidden rounded-xl border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:hover:border-accent/30">
       {/* Image */}
       <Link to={`/producto/${product.id}`} className="overflow-hidden">
         <img

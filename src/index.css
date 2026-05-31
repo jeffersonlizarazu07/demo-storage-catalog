@@ -15,6 +15,8 @@
   --color-border: #E4E4E7;            /* zinc-200     */
   --color-accent: #F59E0B;            /* amber-500    */
   --color-accent-hover: #D97706;       /* amber-600    */
+  --color-accent-secondary: #22D3EE;   /* cyan-400     */
+  --color-accent-secondary-hover: #06B6D4; /* cyan-500 */
   --color-success: #10B981;            /* emerald-500  */
   --color-error: #EF4444;              /* red-500      */
 }
@@ -45,6 +47,63 @@
   #root {
     @apply flex min-h-svh flex-col;
   }
+
+  /* ── Custom selection ── */
+  ::selection {
+    background: rgb(245 158 11 / 0.3);
+    color: inherit;
+  }
+
+  .dark ::selection {
+    background: rgb(245 158 11 / 0.4);
+  }
+
+  /* ── Custom scrollbar ── */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #E4E4E7;
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #A1A1AA;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: #27272A;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #52525B;
+  }
+}
+
+/* ── Utilities ── */
+@utility glass {
+  background: rgb(255 255 255 / 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+@utility dark-glass {
+  background: rgb(24 24 27 / 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+@utility section-divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-border), transparent);
+}
+
+/* ── Section background aura (cyan/amber subtle glow) ── */
+@utility bg-aura-accent {
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgb(245 158 11 / 0.08), transparent);
+}
+@utility bg-aura-cyan {
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgb(34 211 238 / 0.06), transparent);
 }
 
 /* ── Animations ── */
