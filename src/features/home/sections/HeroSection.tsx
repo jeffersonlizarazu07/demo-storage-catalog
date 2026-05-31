@@ -38,8 +38,8 @@ export function HeroSection() {
               inView ? 'animate-fade-in-up' : 'opacity-0'
             }`}
           >
-            Descubre la{' '}
-            <span className="text-accent">tecnología</span>
+            Descubre los{' '}
+            <span className="text-accent">productos</span>
             {' '}que necesitas
           </h1>
 
@@ -48,8 +48,8 @@ export function HeroSection() {
               inView ? 'animate-fade-in-up delay-100' : 'opacity-0'
             }`}
           >
-            Explora nuestro catálogo con los mejores productos en gaming, audio,
-            computadores y accesorios. Encuentra lo que buscas al mejor precio.
+            Explora nuestro catálogo con los mejores productos en tecnología, joyería,
+            vestimenta para toda ocasión y accesorios. Encuentra lo que buscas al mejor precio.
           </p>
 
           <div
