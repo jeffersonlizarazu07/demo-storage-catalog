@@ -1,0 +1,4 @@
+# Self-contained workspace for Vercel deployment
+# Overrides any parent workspace detection
+packages:
+  - '.'

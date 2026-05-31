@@ -3,8 +3,7 @@
 /.pnp
 .pnp.js
 
-# Package manager lockfiles (project uses npm — ignore other managers)
-pnpm-lock.yaml
+# Package manager lockfiles (project uses pnpm)
 yarn.lock
 yarn-error.log
 bun.lock
@@ -101,3 +100,4 @@ PRD.md
 skills-lock.json
 .agents/skills/frontend-design/LICENSE.txt
 .agents/skills/frontend-design/SKILL.md
+.env.example
