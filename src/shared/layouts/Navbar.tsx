@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 interface NavbarProps {
@@ -14,6 +14,16 @@ const navItems = [
 
 export function Navbar({ isDark, onToggleDark }: NavbarProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    function handleScroll() {
+      setIsScrolled(window.scrollY > 10);
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -23,7 +33,13 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border bg-surface/80 backdrop-blur-md dark:border-white/10 dark:bg-primary/80">
+    <nav
+      className={`sticky top-0 z-50 w-full border-b bg-surface/80 backdrop-blur-md transition-shadow duration-300 ${
+        isScrolled
+          ? 'border-border shadow-md dark:border-white/10'
+          : 'border-transparent dark:border-transparent'
+      } dark:bg-primary/80`}
+    >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand */}
         <Link to="/" className="text-xl font-bold tracking-tight text-primary dark:text-white">
