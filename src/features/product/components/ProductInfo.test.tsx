@@ -32,7 +32,8 @@ describe('ProductInfo', () => {
   });
 
   it('should NOT render brand when brand is undefined', () => {
-    const { brand: _brand, ...productWithoutBrand } = baseProduct;
+    const { brand, ...productWithoutBrand } = baseProduct;
+    void brand;
     render(<ProductInfo product={productWithoutBrand as Product} />);
     expect(screen.queryByText(/marca/i)).not.toBeInTheDocument();
   });

@@ -24,12 +24,16 @@ function getInitialMode(): ThemeMode {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setModeState] = useState<ThemeMode>(getInitialMode);
-  const [systemDark, setSystemDark] = useState(false);
+  const [systemDark, setSystemDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    return false;
+  });
 
-  // Read initial system preference and listen for changes
+  // Listen for system preference changes
   useEffect(() => {
     const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    setSystemDark(mq.matches);
 
     function handleChange(e: MediaQueryListEvent) {
       setSystemDark(e.matches);

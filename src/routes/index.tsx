@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Link } from 'react-router-dom';
 
 import { WarningIcon } from '../shared/components/Icons';
 import { ErrorBoundary } from '../shared/components/ErrorBoundary';

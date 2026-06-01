@@ -9,24 +9,38 @@ export function useHomeCategories() {
   const [categories, setCategories] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  const load = useCallback(async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const names = await fetchCategories();
-      setCategories(names);
-    } catch {
-      setError('No pudimos cargar las categorías. Intenta de nuevo.');
-      setCategories([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    load();
-  }, [load]);
+    let cancelled = false;
 
-  return { categories, loading, error, onRetry: load } as const;
+    fetchCategories()
+      .then((names) => {
+        if (!cancelled) {
+          setCategories(names);
+          setError(null);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setError('No pudimos cargar las categorías. Intenta de nuevo.');
+          setCategories([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [retryCount]);
+
+  const onRetry = useCallback(() => {
+    setLoading(true);
+    setError(null);
+    setRetryCount((c) => c + 1);
+  }, []);
+
+  return { categories, loading, error, onRetry } as const;
 }

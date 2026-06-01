@@ -2,6 +2,7 @@ import React from 'react';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
+import type { RouteObject } from 'react-router-dom';
 
 import { ErrorBoundary } from '../shared/components/ErrorBoundary';
 
@@ -48,7 +49,7 @@ describe('Route configuration', () => {
     const children = routes[0].children!;
     // index route has no path, index: true
     expect(children[0]).not.toHaveProperty('path');
-    expect((children[0] as any).index).toBe(true);
+    expect((children[0] as RouteObject).index).toBe(true);
     expect(children[1]).toMatchObject({ path: '/catalogo' });
     expect(children[2]).toMatchObject({ path: '/producto/:id' });
     expect(children[3]).toMatchObject({ path: '/contacto' });
@@ -57,19 +58,21 @@ describe('Route configuration', () => {
   it('should wrap each route in Suspense with a fallback', () => {
     const children = routes[0].children!;
     children.forEach((route) => {
-      const element = route.element as React.ReactElement;
+      const element = route.element as React.ReactElement<
+        React.ComponentProps<typeof React.Suspense>
+      >;
       expect(element.type).toBe(React.Suspense);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      expect((element.props as any).fallback).toBeDefined();
+      expect(element.props.fallback).toBeDefined();
     });
   });
 
   it('should wrap each route page in ErrorBoundary', () => {
     const children = routes[0].children!;
     children.forEach((route) => {
-      const element = route.element as React.ReactElement;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const childrenContent = (element.props as any).children as React.ReactElement;
+      const element = route.element as React.ReactElement<
+        React.ComponentProps<typeof React.Suspense>
+      >;
+      const childrenContent = element.props.children as React.ReactElement;
       // Children is wrapped via withErrorBoundary() → renders <ErrorBoundary>
       expect(childrenContent.type).toBe(ErrorBoundary);
     });
