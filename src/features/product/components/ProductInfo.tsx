@@ -1,4 +1,5 @@
 import type { Product } from '../../../shared/interfaces/product.interface';
+import { Badge } from '../../../shared/components/Badge';
 import { WhatsAppIcon } from '../../../shared/components/Icons';
 import { getWhatsAppLink } from '../../../shared/utils/whatsapp';
 
@@ -10,9 +11,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
   return (
     <div className="flex flex-col gap-6">
       {/* Category badge */}
-      <span className="w-fit rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
-        {product.category}
-      </span>
+      <Badge size="md">{product.category}</Badge>
 
       {/* Name + Brand */}
       <div>

@@ -54,7 +54,9 @@ function withErrorBoundary(page: React.ReactNode) {
   return (
     <ErrorBoundary
       fallback={<RouteError />}
-      onError={(error) => console.error('[Route Error]', error)}
+      onError={(error) => {
+        if (import.meta.env.DEV) console.error('[Route Error]', error);
+      }}
     >
       {page}
     </ErrorBoundary>

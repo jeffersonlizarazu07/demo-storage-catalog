@@ -20,7 +20,7 @@ export function useProduct() {
         setError(null);
 
         const productId = Number(id);
-        if (Number.isNaN(productId)) {
+        if (Number.isNaN(productId) || productId <= 0) {
           if (!cancelled) {
             setProduct(null);
             setRelatedProducts([]);

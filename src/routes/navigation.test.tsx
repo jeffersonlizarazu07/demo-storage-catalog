@@ -6,9 +6,9 @@ import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 // ── Mocks ────────────────────────────────────────────────────────────────────
 
 // Mockeamos las páginas lazy-loaded para que sean síncronas en tests
-// Usamos require para traer Link de react-router-dom dentro del factory
-vi.mock('../features/home/Home', () => {
-  const { Link } = require('react-router-dom');
+// Importamos Link fuera del factory (vi.mock se hostea, pero la referencia es válida)
+vi.mock('../features/home/Home', async () => {
+  const { Link } = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
   return {
     Home: () => (
       <div data-testid="page-home">
