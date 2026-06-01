@@ -1,38 +1,15 @@
-import { useState, useEffect } from 'react';
 import { useInView } from '../../../shared/hooks/useInView';
 import { ProductCard } from '../../../shared/components/ProductCard';
 import { Button } from '../../../shared/components/Button';
-import { fetchProducts } from '../../../shared/services/productService';
 import type { Product } from '../../../shared/interfaces/product.interface';
 
-export function FeaturedProducts() {
+interface FeaturedProductsProps {
+  products: Product[];
+  loading: boolean;
+}
+
+export function FeaturedProducts({ products, loading }: FeaturedProductsProps) {
   const { ref, inView } = useInView();
-  const [featured, setFeatured] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    async function load() {
-      try {
-        setLoading(true);
-        const products = await fetchProducts();
-        if (!cancelled) {
-          setFeatured(products.slice(0, 4));
-        }
-      } catch {
-        // Silently fail — this section is decorative
-        if (!cancelled) setFeatured([]);
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
-    }
-
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   return (
     <section ref={ref} className="relative bg-bg px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
@@ -75,7 +52,7 @@ export function FeaturedProducts() {
                   className="h-80 animate-pulse rounded-xl bg-gray-200 dark:bg-white/10"
                 />
               ))
-            : featured.map((product, index) => (
+            : products.map((product, index) => (
                 <div
                   key={product.id}
                   className={inView ? 'animate-fade-in-up' : 'opacity-0'}

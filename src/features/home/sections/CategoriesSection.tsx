@@ -1,7 +1,12 @@
-import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useInView } from '../../../shared/hooks/useInView';
-import { fetchCategories } from '../../../shared/services/productService';
+
+interface CategoriesSectionProps {
+  categories: string[];
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
+}
 
 /* ── Icon & description map per category keyword ── */
 
@@ -118,38 +123,9 @@ function getCategoryDisplay(name: string): CategoryDisplay {
   return CATEGORY_DISPLAY[name] ?? fallbackDisplay(name);
 }
 
-export function CategoriesSection() {
+export function CategoriesSection({ categories, loading, error, onRetry }: CategoriesSectionProps) {
   const { ref, inView } = useInView();
-  const [categories, setCategories] = useState<CategoryDisplay[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const isMounted = useRef(true);
-
-  async function loadCategories() {
-    setLoading(true);
-    setError(null);
-    try {
-      const names = await fetchCategories();
-      if (isMounted.current) {
-        setCategories(names.map(getCategoryDisplay));
-      }
-    } catch {
-      if (isMounted.current) {
-        setError('No pudimos cargar las categorías. Intenta de nuevo.');
-        setCategories([]);
-      }
-    } finally {
-      if (isMounted.current) setLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    isMounted.current = true;
-    loadCategories();
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
+  const displayCategories = categories.map(getCategoryDisplay);
 
   /* Error state: show error message with retry button */
   if (error) {
@@ -168,7 +144,7 @@ export function CategoriesSection() {
           <div className="mt-10 flex flex-col items-center gap-4 rounded-xl border border-red-200 bg-red-50 p-8 dark:border-red-900/30 dark:bg-red-900/10">
             <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
             <button
-              onClick={loadCategories}
+              onClick={onRetry}
               className="rounded-lg bg-accent px-5 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
             >
               Intentar de nuevo
@@ -215,7 +191,7 @@ export function CategoriesSection() {
                   <div className="mt-2 h-4 w-32 animate-pulse rounded bg-gray-200 dark:bg-white/10" />
                 </div>
               ))
-            : categories.map((category, index) => (
+            : displayCategories.map((category, index) => (
                 <Link
                   key={category.name}
                   to={`/catalogo?categoria=${category.name.toLowerCase()}`}

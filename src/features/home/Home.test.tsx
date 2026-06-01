@@ -3,35 +3,19 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { Home } from './Home';
 
-// Mockeamos el servicio para controlar FeaturedProducts desde Home
-vi.mock('../../shared/services/productService', () => ({
-  fetchProducts: vi.fn(),
+// Mockeamos los hooks de Home para no depender de fetch
+const mockUseFeaturedProducts = vi.fn();
+const mockUseHomeCategories = vi.fn();
+
+vi.mock('./hooks/useFeaturedProducts', () => ({
+  useFeaturedProducts: () => mockUseFeaturedProducts(),
 }));
 
-import { fetchProducts } from '../../shared/services/productService';
+vi.mock('./hooks/useHomeCategories', () => ({
+  useHomeCategories: () => mockUseHomeCategories(),
+}));
+
 import type { Product } from '../../shared/interfaces/product.interface';
-
-/**
- * Mock de IntersectionObserver para que useInView funcione en test.
- * Al no disparar intersección, los elementos renderizan con opacity-0
- * pero siguen en el DOM y son accesibles.
- */
-function createMockIntersectionObserver() {
-  const observe = vi.fn();
-  const unobserve = vi.fn();
-  const disconnect = vi.fn();
-
-  class MockIO {
-    constructor() {
-      /* no-op */
-    }
-    observe = observe;
-    unobserve = unobserve;
-    disconnect = disconnect;
-  }
-
-  return { MockIO, observe };
-}
 
 const MOCK_PRODUCTS: Product[] = [
   {
@@ -68,17 +52,34 @@ const MOCK_PRODUCTS: Product[] = [
   },
 ];
 
-describe('Home page', () => {
-  let mockIO: ReturnType<typeof createMockIntersectionObserver>;
+const LOADED_FEATURED = { products: MOCK_PRODUCTS, loading: false };
+const LOADING_FEATURED = { products: [], loading: true };
+const LOADED_CATEGORIES = {
+  categories: ['Electrónica', 'Joyería', 'Ropa Hombre', 'Ropa Mujer'],
+  loading: false,
+  error: null,
+  onRetry: vi.fn(),
+};
+const LOADING_CATEGORIES = {
+  categories: [],
+  loading: true,
+  error: null,
+  onRetry: vi.fn(),
+};
+const ERROR_CATEGORIES = {
+  categories: [],
+  loading: false,
+  error: 'No pudimos cargar las categorías. Intenta de nuevo.',
+  onRetry: vi.fn(),
+};
 
+describe('Home page', () => {
   beforeEach(() => {
-    mockIO = createMockIntersectionObserver();
-    vi.stubGlobal('IntersectionObserver', mockIO.MockIO);
-    vi.mocked(fetchProducts).mockResolvedValue(MOCK_PRODUCTS);
+    mockUseFeaturedProducts.mockReturnValue(LOADED_FEATURED);
+    mockUseHomeCategories.mockReturnValue(LOADED_CATEGORIES);
   });
 
   afterEach(() => {
-    vi.unstubAllGlobals();
     vi.clearAllMocks();
   });
 
@@ -125,62 +126,78 @@ describe('Home page', () => {
 
   describe('FeaturedProducts integration', () => {
     it('should show skeleton placeholders while FeaturedProducts is loading', () => {
-      // No resolvemos fetchProducts aún — se queda en pending
-      vi.mocked(fetchProducts).mockImplementationOnce(() => new Promise(() => {}));
-
+      mockUseFeaturedProducts.mockReturnValue(LOADING_FEATURED);
       renderHome();
 
       const skeletons = document.querySelectorAll('.animate-pulse');
       expect(skeletons.length).toBeGreaterThanOrEqual(4);
     });
 
-    it('should render FeaturedProducts products after loading completes', async () => {
+    it('should render FeaturedProducts products after loading completes', () => {
       renderHome();
 
-      expect(await screen.findByText('Teclado Mecánico')).toBeInTheDocument();
+      expect(screen.getByText('Teclado Mecánico')).toBeInTheDocument();
       expect(screen.getByText('Mouse Gamer')).toBeInTheDocument();
       expect(screen.getByText('Audífonos Bluetooth')).toBeInTheDocument();
       expect(screen.getByText('Monitor 27"')).toBeInTheDocument();
     });
 
-    it('should not show skeletons after FeaturedProducts loads', async () => {
+    it('should not show skeletons after FeaturedProducts loads', () => {
       renderHome();
-
-      await screen.findByText('Teclado Mecánico');
-
       expect(document.querySelectorAll('.animate-pulse').length).toBe(0);
     });
 
-    it('should handle FeaturedProducts fetch error gracefully', async () => {
-      vi.mocked(fetchProducts).mockRejectedValue(new Error('Network error'));
-
+    it('should handle FeaturedProducts empty state (fetch error)', () => {
+      mockUseFeaturedProducts.mockReturnValue({ products: [], loading: false });
       renderHome();
-
-      // Esperar a que React procese el error (catch → finally → setLoading(false))
-      await vi.waitFor(() => {
-        expect(document.querySelectorAll('.animate-pulse').length).toBe(0);
-      });
 
       // El heading sigue presente
       expect(screen.getByRole('heading', { name: /destacados/i })).toBeInTheDocument();
       // No debe haber productos
       expect(screen.queryByText('Teclado Mecánico')).not.toBeInTheDocument();
+      // No debe haber skeletons
+      expect(document.querySelectorAll('.animate-pulse').length).toBe(0);
     });
 
-    it('should render "Ver todos" desktop link to /catalogo after loading', async () => {
+    it('should render "Ver todos" desktop link to /catalogo after loading', () => {
       renderHome();
 
-      const verTodos = await screen.findByRole('link', { name: 'Ver todos' });
+      const verTodos = screen.getByRole('link', { name: 'Ver todos' });
       expect(verTodos).toHaveAttribute('href', '/catalogo');
     });
 
-    it('should render "Ver todos los productos" mobile link to /catalogo after loading', async () => {
+    it('should render "Ver todos los productos" mobile link to /catalogo after loading', () => {
       renderHome();
 
-      const mobileLink = await screen.findByRole('link', {
+      const mobileLink = screen.getByRole('link', {
         name: /ver todos los productos/i,
       });
       expect(mobileLink).toHaveAttribute('href', '/catalogo');
+    });
+  });
+
+  describe('CategoriesSection integration', () => {
+    it('should render category names when loaded', () => {
+      renderHome();
+      // Joyería solo aparece en CategoriesSection (no en FeaturedProducts)
+      expect(screen.getByText('Joyería')).toBeInTheDocument();
+      // "Ropa Hombre" también es exclusivo de categorías
+      expect(screen.getByText('Ropa Hombre')).toBeInTheDocument();
+    });
+
+    it('should show error message when categories fail to load', () => {
+      mockUseHomeCategories.mockReturnValue(ERROR_CATEGORIES);
+      renderHome();
+
+      expect(screen.getByText(/no pudimos cargar las categorías/i)).toBeInTheDocument();
+    });
+
+    it('should show skeleton while categories are loading', () => {
+      mockUseHomeCategories.mockReturnValue(LOADING_CATEGORIES);
+      renderHome();
+
+      const skeletons = document.querySelectorAll('.animate-pulse');
+      expect(skeletons.length).toBeGreaterThanOrEqual(4);
     });
   });
 });

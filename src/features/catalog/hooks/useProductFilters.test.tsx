@@ -1,22 +1,22 @@
 import { useEffect, type ReactNode } from 'react';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, waitFor, act } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { useProductFilters } from './useProductFilters';
 import type { Product } from '../../../shared/interfaces/product.interface';
 
-// Mockeamos SOLO los servicios de datos
-vi.mock('../../../shared/services/productService', () => ({
-  fetchProducts: vi.fn(),
-  fetchCategories: vi.fn(),
+// Mockeamos SOLO el hook de fetching (useProducts).
+// useCategoryFilter y useSearchFilter se prueban de forma real
+// porque son transformaciones síncronas sin efectos secundarios.
+const mockUseProducts = vi.fn();
+
+vi.mock('./useProducts', () => ({
+  useProducts: () => mockUseProducts(),
 }));
 
-import { fetchProducts, fetchCategories } from '../../../shared/services/productService';
-
-/**
- * Componente puente que expone el estado del hook para aserciones.
- * MemoryRouter provee el contexto de useSearchParams de forma real.
- */
+// ---------------------------------------------------------------------------
+// TestHarness — componente puente que expone el estado del hook para aserciones
+// ---------------------------------------------------------------------------
 function TestHarness({
   onState,
   children,
@@ -31,47 +31,68 @@ function TestHarness({
   return <>{children}</>;
 }
 
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+const MOCK_PRODUCTS: Product[] = [
+  {
+    id: 1,
+    name: 'Teclado Mecánico',
+    price: 89.99,
+    category: 'Accesorios',
+    image: '',
+    description: 'Teclado RGB',
+    brand: 'Logitech',
+  },
+  {
+    id: 2,
+    name: 'Laptop Gamer',
+    price: 1500,
+    category: 'Electrónica',
+    image: '',
+    description: 'Laptop potente',
+    brand: 'ASUS',
+  },
+  {
+    id: 3,
+    name: 'Mouse Inalámbrico',
+    price: 49.99,
+    category: 'Accesorios',
+    image: '',
+    description: 'Mouse ergonómico',
+  },
+  {
+    id: 4,
+    name: 'Audífonos Bluetooth',
+    price: 79.99,
+    category: 'Electrónica',
+    image: '',
+    description: 'Cancelación de ruido',
+  },
+] as Product[];
+
+/** Estado predecible que mockUseProducts devuelve cuando los datos ya llegaron. */
+const LOADED_STATE = {
+  loading: false,
+  products: MOCK_PRODUCTS,
+  categories: ['Todas', 'Electrónica', 'Accesorios'],
+  error: null,
+} as const;
+
+/** Estado predecible para el momento de carga. */
+const LOADING_STATE = {
+  loading: true,
+  products: [],
+  categories: ['Todas'],
+  error: null,
+} as const;
+
+/** Estado para simular un error en la API. */
+function errorState(msg: string) {
+  return { loading: false, products: [], categories: ['Todas'], error: msg } as const;
+}
+
 describe('useProductFilters', () => {
-  const mockProducts: Product[] = [
-    {
-      id: 1,
-      name: 'Teclado Mecánico',
-      price: 89.99,
-      category: 'Accesorios',
-      image: '',
-      description: 'Teclado RGB',
-      brand: 'Logitech',
-    },
-    {
-      id: 2,
-      name: 'Laptop Gamer',
-      price: 1500,
-      category: 'Electrónica',
-      image: '',
-      description: 'Laptop potente',
-      brand: 'ASUS',
-    },
-    {
-      id: 3,
-      name: 'Mouse Inalámbrico',
-      price: 49.99,
-      category: 'Accesorios',
-      image: '',
-      description: 'Mouse ergonómico',
-    },
-    {
-      id: 4,
-      name: 'Audífonos Bluetooth',
-      price: 79.99,
-      category: 'Electrónica',
-      image: '',
-      description: 'Cancelación de ruido',
-    },
-  ] as Product[];
-
-  const mockApiCategories = ['Electrónica', 'Accesorios'];
-
-  // Colector de estado mutable para aserciones
   let lastState: ReturnType<typeof useProductFilters> | null = null;
   const captureState = vi.fn((s: ReturnType<typeof useProductFilters>) => {
     lastState = s;
@@ -80,9 +101,7 @@ describe('useProductFilters', () => {
   function renderWithRouter(initialParams = '') {
     lastState = null;
     captureState.mockClear();
-
     const entry = initialParams ? `/catalogo${initialParams}` : '/catalogo';
-
     render(
       <MemoryRouter initialEntries={[entry]}>
         <TestHarness onState={captureState} />
@@ -91,53 +110,57 @@ describe('useProductFilters', () => {
   }
 
   beforeEach(() => {
-    vi.mocked(fetchProducts).mockResolvedValue(mockProducts);
-    vi.mocked(fetchCategories).mockResolvedValue(mockApiCategories);
+    mockUseProducts.mockReturnValue(LOADED_STATE);
   });
 
   afterEach(() => {
     vi.clearAllMocks();
   });
 
+  // ── Loading state ───────────────────────────────────────────────────────
+
   it('should start with loading state and no products', () => {
+    mockUseProducts.mockReturnValue(LOADING_STATE);
     renderWithRouter();
+
     expect(lastState!.loading).toBe(true);
     expect(lastState!.filteredProducts).toEqual([]);
     expect(lastState!.error).toBeNull();
   });
 
-  it('should load products and categories on mount', async () => {
+  // ── Data loaded ─────────────────────────────────────────────────────────
+
+  it('should expose products, categories and computed fields after load', () => {
     renderWithRouter();
 
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
-
-    expect(fetchProducts).toHaveBeenCalledTimes(1);
-    expect(fetchCategories).toHaveBeenCalledTimes(1);
+    expect(lastState!.loading).toBe(false);
+    expect(lastState!.totalCount).toBe(4);
     expect(lastState!.categories).toEqual(['Todas', 'Electrónica', 'Accesorios']);
     expect(lastState!.filteredProducts).toHaveLength(4);
     expect(lastState!.error).toBeNull();
   });
 
-  it('should filter products by category on mount when URL has categoria param', async () => {
-    renderWithRouter('?categoria=electronica');
+  // ── Category filter (URL-driven) ────────────────────────────────────────
 
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
+  it('should filter products by category on mount when URL has categoria param', () => {
+    renderWithRouter('?categoria=electronica');
 
     expect(lastState!.selectedCategory).toBe('Electrónica');
     expect(lastState!.filteredProducts).toHaveLength(2);
     expect(lastState!.filteredProducts.every((p) => p.category === 'Electrónica')).toBe(true);
   });
 
-  it('should filter products by search query matching name', async () => {
-    renderWithRouter();
+  it('should show all products when categoria param matches none', () => {
+    renderWithRouter('?categoria=inexistente');
 
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
+    expect(lastState!.selectedCategory).toBe('Todas');
+    expect(lastState!.filteredProducts).toHaveLength(4);
+  });
+
+  // ── Search filter (text-driven) ─────────────────────────────────────────
+
+  it('should filter products by search query matching name', () => {
+    renderWithRouter();
 
     act(() => {
       lastState!.setSearchQuery('teclado');
@@ -147,12 +170,8 @@ describe('useProductFilters', () => {
     expect(lastState!.filteredProducts[0].name).toBe('Teclado Mecánico');
   });
 
-  it('should filter products by search query matching description', async () => {
+  it('should filter products by search query matching description', () => {
     renderWithRouter();
-
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
 
     act(() => {
       lastState!.setSearchQuery('ergonómico');
@@ -162,12 +181,8 @@ describe('useProductFilters', () => {
     expect(lastState!.filteredProducts[0].name).toBe('Mouse Inalámbrico');
   });
 
-  it('should filter products by search query matching brand', async () => {
+  it('should filter products by search query matching brand', () => {
     renderWithRouter();
-
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
 
     act(() => {
       lastState!.setSearchQuery('logitech');
@@ -177,12 +192,8 @@ describe('useProductFilters', () => {
     expect(lastState!.filteredProducts[0].name).toBe('Teclado Mecánico');
   });
 
-  it('should combine category filter and search query', async () => {
+  it('should combine category filter and search query', () => {
     renderWithRouter('?categoria=electronica');
-
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
 
     act(() => {
       lastState!.setSearchQuery('laptop');
@@ -192,12 +203,8 @@ describe('useProductFilters', () => {
     expect(lastState!.filteredProducts[0].name).toBe('Laptop Gamer');
   });
 
-  it('should return empty array when no products match the filter', async () => {
+  it('should return empty array when no products match the filter', () => {
     renderWithRouter();
-
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
 
     act(() => {
       lastState!.setSearchQuery('xyzproductoimaginario');
@@ -206,15 +213,13 @@ describe('useProductFilters', () => {
     expect(lastState!.filteredProducts).toEqual([]);
   });
 
-  it('should set error state when fetch fails', async () => {
-    vi.mocked(fetchProducts).mockRejectedValue(new Error('Network Error'));
+  // ── Error state ─────────────────────────────────────────────────────────
 
+  it('should propagate error from useProducts', () => {
+    mockUseProducts.mockReturnValue(errorState('Network Error'));
     renderWithRouter();
 
-    await waitFor(() => {
-      expect(lastState!.loading).toBe(false);
-    });
-
+    expect(lastState!.loading).toBe(false);
     expect(lastState!.error).toBe('Network Error');
     expect(lastState!.filteredProducts).toEqual([]);
   });
