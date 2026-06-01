@@ -49,7 +49,9 @@ export function useProductFilters() {
   /* ── Derive selected category from URL ── */
   const selectedCategory = useMemo(() => {
     if (!categoryParam) return 'Todas';
-    const match = categories.find((c) => c.toLowerCase() === categoryParam.toLowerCase());
+    const match = categories.find(
+      (c) => c.localeCompare(categoryParam, 'es', { sensitivity: 'base' }) === 0,
+    );
     return match ?? 'Todas';
   }, [categoryParam, categories]);
 

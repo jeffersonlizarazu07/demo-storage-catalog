@@ -7,7 +7,7 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, searchQuery }: ProductGridProps) {
-  if (products.length === 0) {
+  if (!products?.length) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border px-6 py-16 text-center dark:border-white/10">
         <svg
