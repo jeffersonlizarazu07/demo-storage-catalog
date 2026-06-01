@@ -5,6 +5,10 @@ import {
   fetchCategories,
   fetchProductsByCategory,
 } from './productService';
+// Underlying modules (verify they exist as independent units)
+import { fetchRawProducts, fetchRawProduct, fetchRawCategories } from '../api/productApi';
+import { mapProduct } from '../mappers/productMapper';
+import { mapCategory, reverseCategory } from '../mappers/categoryMapper';
 
 /* ── Helpers ─────────────────────────────────────────── */
 
@@ -194,6 +198,71 @@ describe('productService', () => {
       await expect(fetchProductsByCategory('Electrónica')).rejects.toThrow(
         'Error al filtrar por categoría (500)',
       );
+    });
+  });
+
+  /* ── Underlying modules ── */
+
+  describe('productMapper', () => {
+    it('should map a FakeStoreProduct to Product', () => {
+      const raw = {
+        id: 1,
+        title: 'Test Product',
+        price: 99.99,
+        description: 'A test',
+        category: 'electronics',
+        image: 'https://example.com/img.jpg',
+        rating: { rate: 4.5, count: 10 },
+      };
+      const result = mapProduct(raw);
+      expect(result).toEqual({
+        id: 1,
+        name: 'Test Product',
+        price: 99.99,
+        category: 'Electrónica',
+        image: 'https://example.com/img.jpg',
+        description: 'A test',
+      });
+    });
+  });
+
+  describe('categoryMapper', () => {
+    it('should map EN categories to Spanish', () => {
+      expect(mapCategory('electronics')).toBe('Electrónica');
+      expect(mapCategory('jewelery')).toBe('Joyería');
+    });
+
+    it('should pass through unknown categories', () => {
+      expect(mapCategory('unknown')).toBe('unknown');
+    });
+
+    it('should reverse-map Spanish categories to EN', () => {
+      expect(reverseCategory('Electrónica')).toBe('electronics');
+      expect(reverseCategory('Ropa Hombre')).toBe("men's clothing");
+    });
+
+    it('should pass through unknown Spanish categories', () => {
+      expect(reverseCategory('Unknown')).toBe('Unknown');
+    });
+  });
+
+  describe('productApi', () => {
+    it('fetchRawProducts should call the correct endpoint', async () => {
+      vi.mocked(fetch).mockResolvedValue(mockResponse([]));
+      await fetchRawProducts();
+      expect(fetch).toHaveBeenCalledWith('https://fakestoreapi.com/products');
+    });
+
+    it('fetchRawProduct should call the correct endpoint', async () => {
+      vi.mocked(fetch).mockResolvedValue(mockResponse(null, 404));
+      await fetchRawProduct(42);
+      expect(fetch).toHaveBeenCalledWith('https://fakestoreapi.com/products/42');
+    });
+
+    it('fetchRawCategories should call the correct endpoint', async () => {
+      vi.mocked(fetch).mockResolvedValue(mockResponse([]));
+      await fetchRawCategories();
+      expect(fetch).toHaveBeenCalledWith('https://fakestoreapi.com/products/categories');
     });
   });
 });
