@@ -1,22 +1,21 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
-import { MainLayout } from './MainLayout';
 
-// Mockeamos useDarkMode para no depender de matchMedia/localStorage
-vi.mock('../hooks/useDarkMode', () => ({
-  useDarkMode: () => ({ isDark: false, toggle: vi.fn() }),
-}));
+import { ThemeProvider } from '../context/ThemeContext';
+import { MainLayout } from './MainLayout';
 
 describe('MainLayout', () => {
   function renderLayout() {
     return render(
       <MemoryRouter initialEntries={['/']}>
-        <Routes>
-          <Route element={<MainLayout />}>
-            <Route index element={<div data-testid="outlet-content">Contenido de prueba</div>} />
-          </Route>
-        </Routes>
+        <ThemeProvider>
+          <Routes>
+            <Route element={<MainLayout />}>
+              <Route index element={<div data-testid="outlet-content">Contenido de prueba</div>} />
+            </Route>
+          </Routes>
+        </ThemeProvider>
       </MemoryRouter>,
     );
   }
@@ -49,8 +48,20 @@ describe('MainLayout', () => {
     expect(screen.getByTestId('outlet-content')).toHaveTextContent('Contenido de prueba');
   });
 
-  it('should render Navbar with dark mode button', () => {
+  it('should render Navbar with theme toggle button', () => {
     renderLayout();
-    expect(screen.getByLabelText('Activar modo oscuro')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /modo/i })).toBeInTheDocument();
+  });
+
+  it('should render skip-to-content link with correct href', () => {
+    renderLayout();
+    const skipLink = screen.getByText('Saltar al contenido principal');
+    expect(skipLink).toHaveAttribute('href', '#main-content');
+  });
+
+  it('should render main element with id main-content', () => {
+    renderLayout();
+    const main = document.getElementById('main-content');
+    expect(main).toBeInTheDocument();
   });
 });

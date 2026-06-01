@@ -3,6 +3,7 @@ import { render, screen, within, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 
+import { ThemeProvider } from '../shared/context/ThemeContext';
 import { routes } from '../routes/index';
 
 // ── FakeStore API mock data ─────────────────────────────────────────────────
@@ -107,7 +108,14 @@ function setupFetchMock() {
 
 function renderAt(path: string) {
   const router = createMemoryRouter(routes, { initialEntries: [path] });
-  return { router, ...render(<RouterProvider router={router} />) };
+  return {
+    router,
+    ...render(
+      <ThemeProvider>
+        <RouterProvider router={router} />
+      </ThemeProvider>,
+    ),
+  };
 }
 
 function getNav() {

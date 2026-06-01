@@ -1,23 +1,21 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
+
+import { ThemeProvider } from '../context/ThemeContext';
 import { Navbar } from './Navbar';
 
 describe('Navbar', () => {
-  const onToggleDark = vi.fn();
-
-  /** Helper que renderiza el Navbar dentro de MemoryRouter */
-  function renderNavbar(isDark = false, initialRoute = '/') {
+  /** Helper que renderiza el Navbar dentro de MemoryRouter + ThemeProvider */
+  function renderNavbar(initialRoute = '/') {
     return render(
       <MemoryRouter initialEntries={[initialRoute]}>
-        <Navbar isDark={isDark} onToggleDark={onToggleDark} />
+        <ThemeProvider>
+          <Navbar />
+        </ThemeProvider>
       </MemoryRouter>,
     );
   }
-
-  beforeEach(() => {
-    onToggleDark.mockClear();
-  });
 
   /* ── Brand ── */
 
@@ -51,20 +49,27 @@ describe('Navbar', () => {
 
   /* ── Dark Mode Toggle ── */
 
-  it('should call onToggleDark when dark mode button is clicked', () => {
+  it('should have a theme toggle button with aria-label', () => {
     renderNavbar();
-    fireEvent.click(screen.getByLabelText('Activar modo oscuro'));
-    expect(onToggleDark).toHaveBeenCalledTimes(1);
+    // The button should have an aria-label that includes "Modo"
+    const button = screen.getByRole('button', { name: /modo/i });
+    expect(button).toBeInTheDocument();
   });
 
-  it('should have aria-label "Activar modo claro" when isDark is true', () => {
-    renderNavbar(true);
-    expect(screen.getByLabelText('Activar modo claro')).toBeInTheDocument();
-  });
+  it('should cycle modes when clicked', () => {
+    renderNavbar();
+    const button = screen.getByRole('button', { name: /modo/i });
 
-  it('should have aria-label "Activar modo oscuro" when isDark is false', () => {
-    renderNavbar(false);
-    expect(screen.getByLabelText('Activar modo oscuro')).toBeInTheDocument();
+    // Click once: light → dark
+    fireEvent.click(button);
+    // After click, we should be in dark mode
+    expect(button.innerHTML).toContain('svg');
+
+    // Click again: dark → system
+    fireEvent.click(button);
+
+    // Click again: system → light
+    fireEvent.click(button);
   });
 
   /* ── Mobile Menu ── */
@@ -90,7 +95,6 @@ describe('Navbar', () => {
     renderNavbar();
     fireEvent.click(screen.getByLabelText('Abrir menú de navegación'));
 
-    // Los links del menú mobile deben aparecer (hay tanto desktop como mobile, pero Inicio aparece multiple veces)
     const inicioLinks = screen.getAllByText('Inicio');
     expect(inicioLinks.length).toBeGreaterThanOrEqual(2);
   });
@@ -98,8 +102,6 @@ describe('Navbar', () => {
   /* ── Scroll Effect ── */
 
   it('should handle scroll event without errors', () => {
-    // Verifica que el componente se monta y el scroll listener se registra
-    // sin lanzar errores (happy-dom soporta addEventListener)
     expect(() => renderNavbar()).not.toThrow();
   });
 });

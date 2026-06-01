@@ -1,12 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { SunIcon, MoonIcon, MenuIcon, CloseIcon } from '../components/Icons';
-
-interface NavbarProps {
-  isDark: boolean;
-  onToggleDark: () => void;
-}
+import { SunIcon, MoonIcon, AutoIcon, MenuIcon, CloseIcon } from '../components/Icons';
+import { useDarkMode, type ThemeMode } from '../hooks/useDarkMode';
 
 const navItems = [
   { path: '/', label: 'Inicio' },
@@ -14,7 +10,20 @@ const navItems = [
   { path: '/contacto', label: 'Contacto' },
 ];
 
-export function Navbar({ isDark, onToggleDark }: NavbarProps) {
+const MODE_LABELS: Record<ThemeMode, string> = {
+  light: 'Claro',
+  dark: 'Oscuro',
+  system: 'Sistema',
+};
+
+const NEXT_MODE: Record<ThemeMode, ThemeMode> = {
+  light: 'dark',
+  dark: 'system',
+  system: 'light',
+};
+
+export function Navbar() {
+  const { mode, setMode } = useDarkMode();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -26,6 +35,10 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  function cycleMode() {
+    setMode(NEXT_MODE[mode]);
+  }
 
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -62,14 +75,20 @@ export function Navbar({ isDark, onToggleDark }: NavbarProps) {
 
         {/* Right section: Dark mode toggle + Mobile menu button */}
         <div className="flex items-center gap-2">
-          {/* Dark Mode Toggle */}
+          {/* Dark Mode Toggle — cycles: light → dark → system */}
           <button
             type="button"
-            onClick={onToggleDark}
+            onClick={cycleMode}
             className="rounded-lg p-2 text-muted transition-colors hover:bg-border hover:text-primary dark:text-muted dark:hover:bg-white/10 dark:hover:text-white"
-            aria-label={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
+            aria-label={`Modo ${MODE_LABELS[mode]} — cambiar a ${MODE_LABELS[NEXT_MODE[mode]]}`}
           >
-            {isDark ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+            {mode === 'dark' ? (
+              <MoonIcon className="h-5 w-5" />
+            ) : mode === 'system' ? (
+              <AutoIcon className="h-5 w-5" />
+            ) : (
+              <SunIcon className="h-5 w-5" />
+            )}
           </button>
 
           {/* Mobile menu button */}
