@@ -52,7 +52,7 @@ describe('Contact page', () => {
   it('should render ContactFormSection with form fields', () => {
     renderContact();
     expect(screen.getByLabelText(/nombre/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/correo/i)).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: /correo electrónico/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/mensaje/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /enviar mensaje/i })).toBeInTheDocument();
   });
@@ -87,7 +87,7 @@ describe('Contact page', () => {
       const user = userEvent.setup();
       renderContact();
 
-      const emailInput = screen.getByLabelText(/correo electrónico/i);
+      const emailInput = screen.getByRole('textbox', { name: /correo electrónico/i });
       await user.type(emailInput, 'juan@example.com');
 
       expect(emailInput).toHaveValue('juan@example.com');
@@ -108,7 +108,10 @@ describe('Contact page', () => {
       renderContact();
 
       await user.type(screen.getByLabelText(/nombre completo/i), 'Juan Pérez');
-      await user.type(screen.getByLabelText(/correo electrónico/i), 'juan@example.com');
+      await user.type(
+        screen.getByRole('textbox', { name: /correo electrónico/i }),
+        'juan@example.com',
+      );
       await user.type(screen.getByLabelText(/mensaje/i), 'Quiero información');
 
       await user.click(screen.getByRole('button', { name: /enviar mensaje/i }));
@@ -123,7 +126,10 @@ describe('Contact page', () => {
 
       // Submit first
       await user.type(screen.getByLabelText(/nombre completo/i), 'Juan');
-      await user.type(screen.getByLabelText(/correo electrónico/i), 'juan@test.com');
+      await user.type(
+        screen.getByRole('textbox', { name: /correo electrónico/i }),
+        'juan@test.com',
+      );
       await user.type(screen.getByLabelText(/mensaje/i), 'Test, quiero info');
       await user.click(screen.getByRole('button', { name: /enviar mensaje/i }));
 

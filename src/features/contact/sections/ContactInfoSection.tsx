@@ -27,7 +27,7 @@ const contactDetails = [
     title: 'Dirección',
     content: 'Cra 45 # 23-12, Oficina 302',
     subtitle: 'Bogotá, Colombia',
-    href: 'https://www.google.com/maps/place/Parroquia+San+Carlos+Borromeo/@4.6793236,-74.1090964,18z/data=!4m8!3m7!1s0x8e3f9b6fae721fcf:0xe2319cf52dc3651d!8m2!3d4.6794218!4d-74.1096306!9m1!1b1!16s%2Fg%2F1th0ch7k?authuser=0&entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D',
+    href: 'https://maps.google.com/?q=4.6793236,-74.1090964',
   },
   {
     icon: (
@@ -88,12 +88,21 @@ export function ContactInfoSection() {
           }`}
           style={inView ? { animationDelay: `${index * 100}ms` } : undefined}
         >
-          <div
-            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent hover:cursor-pointer"
-            onClick={() => item.href && window.open(item.href, '_blank')}
-          >
-            {item.icon}
-          </div>
+          {item.href ? (
+            <a
+              href={item.href}
+              target={item.href.startsWith('http') ? '_blank' : undefined}
+              rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+              className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent transition-colors hover:bg-accent/20"
+              aria-label={`Abrir ${item.title}`}
+            >
+              {item.icon}
+            </a>
+          ) : (
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
+              {item.icon}
+            </div>
+          )}
           <div>
             <h3 className="font-semibold text-foreground dark:text-white">{item.title}</h3>
             <p className="mt-1 text-sm text-foreground dark:text-white">{item.content}</p>

@@ -64,44 +64,36 @@ describe('ContactInfoSection', () => {
     expect(screen.getByText(/lun–vie.*9:00.*6:00/i)).toBeInTheDocument();
   });
 
-  describe('clickable icons', () => {
-    function getClickableIcons() {
-      return document.querySelectorAll('.hover\\:cursor-pointer');
-    }
-
-    it('should have 3 clickable icons', () => {
+  describe('contact links', () => {
+    it('should render 3 links with aria-label', () => {
       renderSection();
-      expect(getClickableIcons().length).toBe(3);
+      expect(screen.getByRole('link', { name: /abrir dirección/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /abrir correo electrónico/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /abrir teléfono/i })).toBeInTheDocument();
     });
 
-    it('should open Google Maps when Dirección icon is clicked', () => {
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    it('should have correct href for Dirección with target and rel for external links', () => {
       renderSection();
-
-      (getClickableIcons()[0] as HTMLElement).click();
-      expect(openSpy).toHaveBeenCalledWith(expect.stringContaining('google.com/maps'), '_blank');
-
-      openSpy.mockRestore();
+      const link = screen.getByRole('link', { name: /abrir dirección/i });
+      expect(link).toHaveAttribute('href', 'https://maps.google.com/?q=4.6793236,-74.1090964');
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
     });
 
-    it('should open mailto when Correo Electrónico icon is clicked', () => {
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    it('should have correct href for Correo Electrónico without target', () => {
       renderSection();
-
-      (getClickableIcons()[1] as HTMLElement).click();
-      expect(openSpy).toHaveBeenCalledWith(expect.stringContaining('mailto:'), '_blank');
-
-      openSpy.mockRestore();
+      const link = screen.getByRole('link', { name: /abrir correo electrónico/i });
+      expect(link).toHaveAttribute('href', 'mailto:jeffersonlizarazu@hotmail.com');
+      expect(link).not.toHaveAttribute('target');
+      expect(link).not.toHaveAttribute('rel');
     });
 
-    it('should open tel link when Teléfono icon is clicked', () => {
-      const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    it('should have correct href for Teléfono without target', () => {
       renderSection();
-
-      (getClickableIcons()[2] as HTMLElement).click();
-      expect(openSpy).toHaveBeenCalledWith(expect.stringContaining('tel:'), '_blank');
-
-      openSpy.mockRestore();
+      const link = screen.getByRole('link', { name: /abrir teléfono/i });
+      expect(link).toHaveAttribute('href', 'tel:+573209520302');
+      expect(link).not.toHaveAttribute('target');
+      expect(link).not.toHaveAttribute('rel');
     });
   });
 

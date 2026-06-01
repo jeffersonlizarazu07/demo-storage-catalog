@@ -248,7 +248,10 @@ describe('User flows (integration)', () => {
 
     // Fill form
     await user.type(screen.getByLabelText(/nombre completo/i), 'Juan Pérez');
-    await user.type(screen.getByLabelText(/correo electrónico/i), 'juan@example.com');
+    await user.type(
+      screen.getByRole('textbox', { name: /correo electrónico/i }),
+      'juan@example.com',
+    );
     await user.type(screen.getByLabelText(/mensaje/i), 'Hola, quiero información sobre laptops.');
 
     // Submit
