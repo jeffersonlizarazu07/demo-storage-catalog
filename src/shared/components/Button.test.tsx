@@ -42,6 +42,33 @@ describe('Button', () => {
     expect(buttonElement.className).toContain('bg-primary'); // Conserva base + variante
   });
 
+  it('should apply size classes correctly (sm, md, lg)', () => {
+    const { rerender } = render(<Button size="sm">Small</Button>);
+    let buttonElement = screen.getByRole('button', { name: /small/i });
+    expect(buttonElement.className).toContain('px-3');
+    expect(buttonElement.className).toContain('py-1.5');
+    expect(buttonElement.className).toContain('text-xs');
+
+    rerender(<Button size="md">Medium</Button>);
+    buttonElement = screen.getByRole('button', { name: /medium/i });
+    expect(buttonElement.className).toContain('px-5');
+    expect(buttonElement.className).toContain('py-2.5');
+    expect(buttonElement.className).toContain('text-sm');
+
+    rerender(<Button size="lg">Large</Button>);
+    buttonElement = screen.getByRole('button', { name: /large/i });
+    expect(buttonElement.className).toContain('px-6');
+    expect(buttonElement.className).toContain('py-3');
+    expect(buttonElement.className).toContain('text-base');
+  });
+
+  it('should use md as default size', () => {
+    render(<Button>Default</Button>);
+    const buttonElement = screen.getByRole('button', { name: /default/i });
+    expect(buttonElement.className).toContain('px-5');
+    expect(buttonElement.className).toContain('py-2.5');
+  });
+
   it('should call onClick handler when clicked by user', async () => {
     const onClickMock = vi.fn();
     render(<Button onClick={onClickMock}>Click me</Button>);
