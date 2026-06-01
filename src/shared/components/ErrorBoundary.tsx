@@ -43,7 +43,7 @@ export function DefaultErrorFallback({
       <p className="mt-1 text-sm text-muted">
         Ocurrió un error inesperado. Intenta recargar la página.
       </p>
-      {error && (
+      {error && import.meta.env.DEV && (
         <pre className="mt-4 max-w-lg overflow-auto rounded-lg bg-gray-100 p-4 text-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">
           {error.message}
         </pre>

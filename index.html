@@ -8,6 +8,20 @@
       name="description"
       content="Catálogo web de tecnología — productos gaming, audio, computadores y accesorios"
     />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' 'unsafe-eval';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' https://placehold.co https://fakestoreapi.com data:;
+        connect-src 'self' https://fakestoreapi.com;
+        frame-src 'none';
+        object-src 'none';
+        base-uri 'self';
+      "
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
