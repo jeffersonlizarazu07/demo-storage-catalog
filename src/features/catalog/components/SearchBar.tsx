@@ -24,7 +24,7 @@ export function SearchBar({ value, onChange, totalCount, filteredCount }: Search
         type="text"
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Buscar productos por nombre, marca o descripción..."
+        placeholder="Buscar productos..."
         className="w-full rounded-xl border border-border bg-surface py-3 pr-4 pl-10 text-sm text-primary placeholder:text-muted focus:border-accent focus:ring-2 focus:ring-accent/20 focus:outline-none dark:border-white/10 dark:bg-primary dark:text-white dark:placeholder:text-muted"
       />
 

@@ -44,7 +44,7 @@ function validateForm(form: FormState): FormErrors {
 
 function inputClasses(hasError: boolean): string {
   const base =
-    'mt-1 block w-full rounded-lg border px-4 py-2.5 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 dark:text-white dark:placeholder:text-white/40';
+    'mt-1 block w-full rounded-lg border px-4 py-3 text-sm text-foreground placeholder:text-muted focus:outline-none focus:ring-2 dark:text-white dark:placeholder:text-white/40';
   const normal =
     'border-border bg-bg focus:border-accent focus:ring-accent/30 dark:border-white/10 dark:bg-primary';
   const error =

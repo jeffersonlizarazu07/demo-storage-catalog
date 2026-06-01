@@ -25,7 +25,7 @@ export function ProductCard({
   return (
     <article
       className={`group flex flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:bg-primary dark:hover:border-accent/30 ${
-        variant === 'compact' ? 'h-auto' : 'h-[400px]'
+        variant === 'compact' ? 'h-auto' : 'min-h-[400px] sm:h-[400px]'
       }`}
     >
       {/* Image — hidden in compact variant */}

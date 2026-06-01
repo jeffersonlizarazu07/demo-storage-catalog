@@ -195,7 +195,7 @@ export function CategoriesSection({ categories, loading, error, onRetry }: Categ
                 <Link
                   key={category.name}
                   to={`/catalogo?categoria=${category.name.toLowerCase()}`}
-                  className={`group flex flex-col items-center rounded-xl border border-border bg-surface p-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:hover:border-accent/30 ${
+                  className={`group flex flex-col items-center rounded-xl border border-border bg-surface p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 sm:p-8 dark:border-white/10 dark:hover:border-accent/30 ${
                     inView ? 'animate-fade-in-up' : 'opacity-0'
                   }`}
                   style={inView ? { animationDelay: `${200 + index * 100}ms` } : undefined}

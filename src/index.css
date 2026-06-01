@@ -38,6 +38,7 @@
     @apply m-0 min-h-svh bg-bg font-body text-foreground transition-colors duration-300;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 
   h1,

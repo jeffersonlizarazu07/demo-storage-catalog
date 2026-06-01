@@ -7,7 +7,7 @@ export function HeroSection() {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden px-4 pt-16 pb-20 bg-aura-accent sm:px-6 sm:pt-24 sm:pb-28 lg:px-8 dark:bg-aura-cyan"
+      className="relative overflow-hidden overflow-x-hidden px-4 pt-16 pb-20 bg-aura-accent sm:px-6 sm:pt-24 sm:pb-28 lg:px-8 dark:bg-aura-cyan"
     >
       {/* Background decoration — dramatic mesh blobs */}
       <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
@@ -51,7 +51,7 @@ export function HeroSection() {
           </p>
 
           <div
-            className={`mt-10 flex items-center justify-center gap-4 ${
+            className={`mt-10 flex items-center justify-center gap-4 max-[400px]:flex-col ${
               inView ? 'animate-fade-in-up delay-200' : 'opacity-0'
             }`}
           >
