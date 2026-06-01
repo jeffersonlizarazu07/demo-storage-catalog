@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const PLACEHOLDER_IMG = 'https://placehold.co/600x500/e4e4e7/71717a?text=Producto';
 
 interface ProductGalleryProps {
@@ -6,9 +8,16 @@ interface ProductGalleryProps {
 }
 
 export function ProductGallery({ image, name }: ProductGalleryProps) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-surface dark:border-white/10 dark:bg-primary">
-      <img src={image || PLACEHOLDER_IMG} alt={name} className="h-full w-full object-cover" />
+      <img
+        src={imgError ? PLACEHOLDER_IMG : image || PLACEHOLDER_IMG}
+        alt={name}
+        className="h-full w-full object-cover"
+        onError={() => setImgError(true)}
+      />
     </div>
   );
 }

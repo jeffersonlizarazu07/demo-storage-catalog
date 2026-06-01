@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { Product } from '../interfaces/product.interface';
 import { getWhatsAppLink } from '../utils/whatsapp';
@@ -9,15 +10,18 @@ interface ProductCardProps {
 const PLACEHOLDER_IMG = 'https://placehold.co/400x300/e4e4e7/71717a?text=Producto';
 
 export function ProductCard({ product }: ProductCardProps) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <article className="group flex h-[400px] flex-col overflow-hidden rounded-xl border border-border bg-surface shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 dark:border-white/10 dark:bg-primary dark:hover:border-accent/30">
       {/* Image */}
       <Link to={`/producto/${product.id}`} className="overflow-hidden">
         <img
-          src={product.image || PLACEHOLDER_IMG}
+          src={imgError ? PLACEHOLDER_IMG : product.image || PLACEHOLDER_IMG}
           alt={product.name}
           className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
           loading="lazy"
+          onError={() => setImgError(true)}
         />
       </Link>
 
