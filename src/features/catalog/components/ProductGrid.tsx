@@ -1,4 +1,5 @@
 import type { Product } from '../../../shared/interfaces/product.interface';
+import { SearchIcon } from '../../../shared/components/Icons';
 import { ProductCard } from '../../../shared/components/ProductCard';
 
 interface ProductGridProps {
@@ -10,19 +11,7 @@ export function ProductGrid({ products, searchQuery }: ProductGridProps) {
   if (!products?.length) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-border px-6 py-16 text-center dark:border-white/10">
-        <svg
-          className="h-12 w-12 text-muted"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1}
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"
-          />
-        </svg>
+        <SearchIcon className="h-12 w-12 text-muted" />
         <h3 className="mt-4 text-lg font-semibold text-primary dark:text-white">
           {searchQuery.trim() ? 'Sin resultados' : 'No hay productos'}
         </h3>

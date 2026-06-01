@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+
+import { WarningIcon, ArrowLeftIcon } from '../../shared/components/Icons';
 import { useInView } from '../../shared/hooks/useInView';
 import { useProduct } from './hooks/useProduct';
 import { ProductGallery } from './components/ProductGallery';
@@ -29,19 +31,7 @@ function DetailError({ message }: { message: string }) {
   return (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
-        <svg
-          className="h-7 w-7 text-red-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-          />
-        </svg>
+        <WarningIcon className="h-7 w-7 text-red-500" />
       </div>
       <h2 className="text-xl font-semibold text-primary dark:text-white">
         Error al cargar el producto
@@ -105,19 +95,7 @@ export function ProductDetail() {
           inView ? 'animate-fade-in-up' : 'opacity-0'
         }`}
       >
-        <svg
-          className="h-4 w-4"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-          />
-        </svg>
+        <ArrowLeftIcon className="h-4 w-4" />
         Volver al catálogo
       </Link>
 

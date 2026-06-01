@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
-import { Link, createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import { WarningIcon } from '../shared/components/Icons';
 import { ErrorBoundary } from '../shared/components/ErrorBoundary';
 import { MainLayout } from '../shared/layouts/MainLayout';
 
@@ -33,20 +34,7 @@ function RouteError() {
   return (
     <section className="mx-auto flex max-w-7xl flex-col items-center px-4 py-24 sm:px-6 lg:px-8">
       <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20">
-        <svg
-          className="h-7 w-7 text-red-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth={1.5}
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-          />
-        </svg>
+        <WarningIcon className="h-7 w-7 text-red-500" />
       </div>
       <h2 className="text-xl font-semibold text-primary dark:text-white">Algo salió mal</h2>
       <p className="mt-1 text-sm text-muted">

@@ -1,4 +1,6 @@
 import { type FormEvent, useState } from 'react';
+
+import { CheckIcon } from '../../../shared/components/Icons';
 import { Button } from '../../../shared/components/Button';
 
 interface FormState {
@@ -84,15 +86,7 @@ export function ContactFormSection() {
     return (
       <div className="rounded-xl border border-border bg-surface p-8 text-center dark:border-white/10 dark:bg-primary">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
-          <svg
-            className="h-8 w-8 text-success"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-          </svg>
+          <CheckIcon className="h-8 w-8 text-success" />
         </div>
         <h3 className="mt-4 text-lg font-semibold text-foreground dark:text-white">
           ¡Mensaje enviado!
