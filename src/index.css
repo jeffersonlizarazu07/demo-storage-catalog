@@ -35,7 +35,7 @@
   }
 
   body {
-    @apply m-0 min-h-svh bg-bg font-body text-foreground transition-colors duration-300;
+    @apply m-0 min-h-svh bg-bg font-body text-foreground;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -46,10 +46,24 @@
   h3,
   h4 {
     font-family: var(--font-display);
+    transition:
+      color 300ms ease,
+      background-color 300ms ease;
+  }
+
+  p,
+  span,
+  li {
+    transition:
+      color 300ms ease,
+      background-color 300ms ease;
   }
 
   #root {
     @apply flex min-h-svh flex-col;
+    transition:
+      color 300ms ease,
+      background-color 300ms ease;
   }
 
   /* ── Custom selection ── */
