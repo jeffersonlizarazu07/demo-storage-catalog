@@ -1,12 +1,18 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 
-export type ThemeMode = 'light' | 'dark' | 'system';
+export type ThemeMode = 'light' | 'dark';
 
 interface ThemeContextValue {
   mode: ThemeMode;
   isDark: boolean;
   setMode: (mode: ThemeMode) => void;
+  cycleMode: () => void;
 }
+
+const NEXT_MODE: Record<ThemeMode, ThemeMode> = {
+  light: 'dark',
+  dark: 'light',
+};
 
 const STORAGE_KEY = 'theme-mode';
 const DARK_CLASS = 'dark';
@@ -15,35 +21,17 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 function getInitialMode(): ThemeMode {
   if (typeof window !== 'undefined') {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'light' || stored === 'dark' || stored === 'system') {
+    if (stored === 'light' || stored === 'dark') {
       return stored;
     }
   }
-  return 'system';
+  return 'light';
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [mode, setModeState] = useState<ThemeMode>(getInitialMode);
-  const [systemDark, setSystemDark] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    return false;
-  });
 
-  // Listen for system preference changes
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-
-    function handleChange(e: MediaQueryListEvent) {
-      setSystemDark(e.matches);
-    }
-
-    mq.addEventListener('change', handleChange);
-    return () => mq.removeEventListener('change', handleChange);
-  }, []);
-
-  const isDark = mode === 'system' ? systemDark : mode === 'dark';
+  const isDark = mode === 'dark';
 
   // Apply theme class to <html>
   useEffect(() => {
@@ -64,8 +52,22 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const cycleMode = useCallback(() => {
+    setModeState((prev) => {
+      const next = NEXT_MODE[prev];
+      try {
+        localStorage.setItem(STORAGE_KEY, next);
+      } catch {
+        // localStorage may be unavailable (incognito, SSR)
+      }
+      return next;
+    });
+  }, []);
+
   return (
-    <ThemeContext.Provider value={{ mode, isDark, setMode }}>{children}</ThemeContext.Provider>
+    <ThemeContext.Provider value={{ mode, isDark, setMode, cycleMode }}>
+      {children}
+    </ThemeContext.Provider>
   );
 }
 

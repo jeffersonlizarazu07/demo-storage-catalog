@@ -34,12 +34,12 @@ describe('useDarkMode', () => {
     });
   });
 
-  it('should default to system mode when localStorage is empty', () => {
+  it('should default to light mode when localStorage is empty', () => {
     const { result } = renderHook(() => useDarkMode(), {
       wrapper: createWrapper(),
     });
 
-    expect(result.current.mode).toBe('system');
+    expect(result.current.mode).toBe('light');
   });
 
   it('should read dark mode from localStorage', () => {
@@ -62,12 +62,12 @@ describe('useDarkMode', () => {
     expect(document.documentElement.classList.contains('dark')).toBe(false);
   });
 
-  it('should read system mode from localStorage', () => {
+  it('should ignore unknown localStorage values and fall back to light', () => {
     const { result } = renderHook(() => useDarkMode(), {
       wrapper: createWrapper('system'),
     });
 
-    expect(result.current.mode).toBe('system');
+    expect(result.current.mode).toBe('light');
   });
 
   it('should change mode via setMode and persist to localStorage', () => {
@@ -90,13 +90,6 @@ describe('useDarkMode', () => {
     expect(result.current.mode).toBe('light');
     expect(result.current.isDark).toBe(false);
     expect(localStorage.getItem('theme-mode')).toBe('light');
-
-    act(() => {
-      result.current.setMode('system');
-    });
-
-    expect(result.current.mode).toBe('system');
-    expect(localStorage.getItem('theme-mode')).toBe('system');
   });
 
   it('should apply dark class to html element when in dark mode', () => {

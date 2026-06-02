@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { SunIcon, MoonIcon, AutoIcon, MenuIcon, CloseIcon } from '../components/Icons';
+import { SunIcon, MoonIcon, MenuIcon, CloseIcon } from '../components/Icons';
 import { useDarkMode, type ThemeMode } from '../hooks/useDarkMode';
 
 const navItems = [
@@ -13,17 +13,15 @@ const navItems = [
 const MODE_LABELS: Record<ThemeMode, string> = {
   light: 'Claro',
   dark: 'Oscuro',
-  system: 'Sistema',
 };
 
-const NEXT_MODE: Record<ThemeMode, ThemeMode> = {
-  light: 'dark',
-  dark: 'system',
-  system: 'light',
+const NEXT_MODE_LABEL: Record<ThemeMode, string> = {
+  light: 'Oscuro',
+  dark: 'Claro',
 };
 
 export function Navbar() {
-  const { mode, setMode } = useDarkMode();
+  const { mode, cycleMode } = useDarkMode();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -35,10 +33,6 @@ export function Navbar() {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  function cycleMode() {
-    setMode(NEXT_MODE[mode]);
-  }
 
   const linkClasses = ({ isActive }: { isActive: boolean }) =>
     `px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
@@ -80,15 +74,9 @@ export function Navbar() {
             type="button"
             onClick={cycleMode}
             className="rounded-lg p-2 text-muted transition-colors hover:bg-border hover:text-primary dark:text-muted dark:hover:bg-white/10 dark:hover:text-white"
-            aria-label={`Modo ${MODE_LABELS[mode]} — cambiar a ${MODE_LABELS[NEXT_MODE[mode]]}`}
+            aria-label={`Modo ${MODE_LABELS[mode]} — cambiar a ${NEXT_MODE_LABEL[mode]}`}
           >
-            {mode === 'dark' ? (
-              <MoonIcon className="h-5 w-5" />
-            ) : mode === 'system' ? (
-              <AutoIcon className="h-5 w-5" />
-            ) : (
-              <SunIcon className="h-5 w-5" />
-            )}
+            {mode === 'dark' ? <MoonIcon className="h-5 w-5" /> : <SunIcon className="h-5 w-5" />}
           </button>
 
           {/* Mobile menu button */}
