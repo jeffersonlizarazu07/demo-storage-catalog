@@ -31,7 +31,14 @@ export async function fetchRawProduct(id: number): Promise<FakeStoreProduct | nu
   const res = await fetch(`${API_BASE}/products/${id}`);
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`Error al obtener producto #${id} (${res.status})`);
-  return res.json();
+
+  // FakeStore sometimes returns 200 with an empty body for non-existent IDs,
+  // which would cause a JSON parse error. Treat that as "not found".
+  try {
+    return await res.json();
+  } catch {
+    return null;
+  }
 }
 
 /**
