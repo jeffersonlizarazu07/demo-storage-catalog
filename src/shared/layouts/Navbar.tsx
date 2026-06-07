@@ -55,7 +55,7 @@ export function Navbar() {
           to="/"
           className="font-display text-xl font-bold tracking-tight text-primary dark:text-white"
         >
-          Tech<span className="text-accent">Store</span>
+          Tech<span className="text-accent dark:text-amber-400">Store</span>
         </Link>
 
         {/* Desktop Nav */}

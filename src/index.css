@@ -13,8 +13,8 @@
   --color-foreground: #09090b; /* zinc-950     */
   --color-muted: #71717a; /* zinc-500     */
   --color-border: #e4e4e7; /* zinc-200     */
-  --color-accent: #f59e0b; /* amber-500    */
-  --color-accent-hover: #d97706; /* amber-600    */
+  --color-accent: #92400e; /* amber-800    */
+  --color-accent-hover: #78350f; /* amber-900    */
   --color-accent-secondary: #22d3ee; /* cyan-400     */
   --color-accent-secondary-hover: #06b6d4; /* cyan-500 */
   --color-success: #10b981; /* emerald-500  */
@@ -68,12 +68,12 @@
 
   /* ── Custom selection ── */
   ::selection {
-    background: rgb(245 158 11 / 0.3);
+    background: rgb(146 64 14 / 0.3);
     color: inherit;
   }
 
   .dark ::selection {
-    background: rgb(245 158 11 / 0.4);
+    background: rgb(146 64 14 / 0.4);
   }
 
   /* ── Custom scrollbar ── */
@@ -118,7 +118,7 @@
 
 /* ── Section background aura (cyan/amber subtle glow) ── */
 @utility bg-aura-accent {
-  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgb(245 158 11 / 0.08), transparent);
+  background: radial-gradient(ellipse 80% 60% at 50% -20%, rgb(146 64 14 / 0.08), transparent);
 }
 @utility bg-aura-cyan {
   background: radial-gradient(ellipse 80% 60% at 50% -20%, rgb(34 211 238 / 0.06), transparent);

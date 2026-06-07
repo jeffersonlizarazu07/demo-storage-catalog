@@ -12,7 +12,7 @@ export function Footer() {
             to="/"
             className="font-display text-lg font-bold tracking-tight text-primary dark:text-white"
           >
-            Tech<span className="text-accent">Store</span>
+            Tech<span className="text-accent dark:text-amber-400">Store</span>
           </Link>
 
           {/* Links */}
