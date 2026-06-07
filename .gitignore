@@ -103,3 +103,8 @@ skills-lock.json
 .env.example
 
 PRD/AUDITORIA.md
+
+# Test screenshots & snapshots (browser testing artifacts)
+mobile-*.png
+tablet-*.png
+*-snapshot.txt
