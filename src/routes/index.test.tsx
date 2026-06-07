@@ -4,7 +4,7 @@ import { render, screen, within } from '@testing-library/react';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 
-import { ErrorBoundary } from '../shared/components/ErrorBoundary';
+import { RouteErrorBoundary } from '../shared/components/RouteErrorBoundary';
 
 // ── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -40,9 +40,9 @@ function renderRoute(path: string) {
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe('Route configuration', () => {
-  it('should define 4 child routes', () => {
+  it('should define 5 child routes (4 pages + 1 catch-all)', () => {
     expect(routes).toHaveLength(1);
-    expect(routes[0].children).toHaveLength(4);
+    expect(routes[0].children).toHaveLength(5);
   });
 
   it('should have correct route paths', () => {
@@ -53,11 +53,14 @@ describe('Route configuration', () => {
     expect(children[1]).toMatchObject({ path: '/catalogo' });
     expect(children[2]).toMatchObject({ path: '/producto/:id' });
     expect(children[3]).toMatchObject({ path: '/contacto' });
+    expect(children[4]).toMatchObject({ path: '*' });
   });
 
-  it('should wrap each route in Suspense with a fallback', () => {
+  it('should wrap lazy-loaded routes in Suspense with a fallback', () => {
     const children = routes[0].children!;
-    children.forEach((route) => {
+    // Skip the catch-all (*) — NotFoundPage is eagerly loaded, not lazy
+    const lazyRoutes = children.filter((r) => r.path !== '*');
+    lazyRoutes.forEach((route) => {
       const element = route.element as React.ReactElement<
         React.ComponentProps<typeof React.Suspense>
       >;
@@ -66,15 +69,17 @@ describe('Route configuration', () => {
     });
   });
 
-  it('should wrap each route page in ErrorBoundary', () => {
+  it('should wrap lazy-loaded routes in RouteErrorBoundary', () => {
     const children = routes[0].children!;
-    children.forEach((route) => {
+    // Skip the catch-all (*) — NotFoundPage is already a static error page
+    const lazyRoutes = children.filter((r) => r.path !== '*');
+    lazyRoutes.forEach((route) => {
       const element = route.element as React.ReactElement<
         React.ComponentProps<typeof React.Suspense>
       >;
       const childrenContent = element.props.children as React.ReactElement;
-      // Children is wrapped via withErrorBoundary() → renders <ErrorBoundary>
-      expect(childrenContent.type).toBe(ErrorBoundary);
+      // Children is wrapped via RouteErrorBoundary (component, not HOC)
+      expect(childrenContent.type).toBe(RouteErrorBoundary);
     });
   });
 });
@@ -98,6 +103,12 @@ describe('Route rendering', () => {
   it('should render Contact page at /contacto', async () => {
     renderRoute('/contacto');
     expect(await screen.findByTestId('page-contact')).toHaveTextContent('Página de Contacto');
+  });
+
+  it('should render NotFoundPage for unknown routes', async () => {
+    renderRoute('/ruta-que-no-existe');
+    expect(await screen.findByText('Página no encontrada')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /volver al inicio/i })).toHaveAttribute('href', '/');
   });
 });
 
