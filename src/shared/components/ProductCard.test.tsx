@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { ProductCard } from './ProductCard';
 import type { Product } from '../interfaces/product.interface';
@@ -72,6 +72,24 @@ describe('ProductCard', () => {
     expect(image).toBeInTheDocument();
 
     // Verificamos que contenga el host de placeholder
+    expect(image.src).toContain('placehold.co');
+    expect(image.src).toContain('text=Producto');
+  });
+
+  it('should fallback to placeholder image when onError fires on the img element', () => {
+    render(
+      <MemoryRouter>
+        <ProductCard product={mockProduct} />
+      </MemoryRouter>,
+    );
+
+    const image = screen.getByRole('img', { name: mockProduct.name }) as HTMLImageElement;
+    expect(image.src).toBe(mockProduct.image);
+
+    // Disparamos el evento de error en el elemento img
+    fireEvent.error(image);
+
+    // Después del onError, debería mostrar el placeholder
     expect(image.src).toContain('placehold.co');
     expect(image.src).toContain('text=Producto');
   });

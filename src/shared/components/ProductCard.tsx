@@ -34,6 +34,8 @@ export function ProductCard({
           <img
             src={imgError ? PLACEHOLDER_IMG : product.image || PLACEHOLDER_IMG}
             alt={product.name}
+            width={400}
+            height={300}
             className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
             onError={() => setImgError(true)}
@@ -46,10 +48,10 @@ export function ProductCard({
         {/* Category badge */}
         <Badge size="sm">{product.category}</Badge>
 
-        {/* Name — max 2 líneas para mantener cards uniformes */}
+        {/* Name — max 2 líneas con word-break para evitar overflow */}
         <Link
           to={`/producto/${product.id}`}
-          className="line-clamp-2 font-display text-base leading-snug font-semibold text-primary dark:text-white"
+          className="line-clamp-2 font-display text-base leading-snug font-semibold break-words text-primary dark:text-white"
         >
           {product.name}
         </Link>

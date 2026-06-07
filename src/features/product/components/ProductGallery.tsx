@@ -15,6 +15,8 @@ export function ProductGallery({ image, name }: ProductGalleryProps) {
       <img
         src={imgError ? PLACEHOLDER_IMG : image || PLACEHOLDER_IMG}
         alt={name}
+        width={600}
+        height={500}
         className="h-full w-full object-cover"
         onError={() => setImgError(true)}
       />
